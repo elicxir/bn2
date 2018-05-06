@@ -3,7 +3,7 @@ var gametime;
 var notesnum;
 var endflag;
 
-var musicpass=res.bgm;
+var musicpass="res/AXION.mp3";
 var note_sort=[];
 var note_data=[];
 
@@ -303,8 +303,7 @@ var GAME_NOTES=cc.Layer.extend({
         this.note_graph2=[];
         this.holdgraph_bar=[];
         
-        cc.audioEngine.playMusic(musicpass,false);
-        cc.audioEngine.pauseMusic();
+        
 
         cc.loader.loadJson(res.chart,function(err,data){
           if(!err){
@@ -361,7 +360,9 @@ var GAME_NOTES=cc.Layer.extend({
                 }
 
             }
-        }, 0.2);
+            cc.audioEngine.playMusic(musicpass,false);
+            cc.audioEngine.pauseMusic();
+        }, 1);
 
 
         this.scheduleOnce(function() {
@@ -369,7 +370,7 @@ var GAME_NOTES=cc.Layer.extend({
 
 
             startflag=1;
-        }, 3);
+        }, 4);
 
         this.scheduleUpdate();
         

@@ -23,6 +23,7 @@
  ****************************************************************************/
 function GO_NEXT(name){
     var s = cc.TransitionFade.create(2, new name());
+    
     cc.director.runScene(s);
    
 }
