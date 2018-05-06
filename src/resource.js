@@ -53,6 +53,7 @@ var res = {
     go_ef:"res/goef.png",
     miss_ef:"res/missef.png",
 
+    bgm:"res/AXION.mp3",
     combo:"res/combo.png",
     num:"res/num.png",
     result_png:"res/result.png",

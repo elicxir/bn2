@@ -3,7 +3,7 @@ var gametime;
 var notesnum;
 var endflag;
 
-var musicpass="res/AXION.mp3";
+var musicpass=res.bgm;
 var note_sort=[];
 var note_data=[];
 
