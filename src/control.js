@@ -196,6 +196,22 @@ var D_PAD = cc.Layer.extend({
                 if (keyCode == cc.KEY.up) {
                     now_up=1;                              
                 }
+
+                if (keyCode == cc.KEY.s) {
+                    now_down=1;
+                }   
+
+                if (keyCode == cc.KEY.a) {
+                    now_left=1;                              
+                }
+               
+                if (keyCode == cc.KEY.d) {
+                    now_right=1;                              
+                }
+
+                if (keyCode == cc.KEY.w) {
+                    now_up=1;                              
+                }
                 
             },
 
@@ -230,6 +246,22 @@ var D_PAD = cc.Layer.extend({
                 }
 
                 if (keyCode == cc.KEY.up) {
+                    now_up=0;                              
+                }
+
+                if (keyCode == cc.KEY.s) {
+                    now_down=0;
+                } 
+
+                if (keyCode == cc.KEY.d) {
+                    now_left=0;                              
+                }
+               
+                if (keyCode == cc.KEY.a) {
+                    now_right=0;                              
+                }
+
+                if (keyCode == cc.KEY.w) {
                     now_up=0;                              
                 }
 

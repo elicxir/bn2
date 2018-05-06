@@ -506,6 +506,8 @@ var GAME_BASE = cc.Layer.extend({
         });
         this.addChild(this.lane6, 0);
 
+
+
         this.lane5 = new cc.Sprite(res.bg_png);
         this.lane5.attr({
             x: size.width / 2,
@@ -559,12 +561,51 @@ var GAME_BASE = cc.Layer.extend({
         });
         this.addChild(this.lane1, 3);
 
+        cc.eventManager.addListener({
+            event: cc.EventListener.TOUCH_ONE_BY_ONE,
+            onTouchBegan: function(touch, event){
+                var target=event.getCurrentTarget();
+                var location=target.convertToNodeSpace(touch.getLocation());
+                var spriteSize =target.getContentSize();
+                var spriteRect =cc.rect(0,0,spriteSize.width,spriteSize.height);
+                if(cc.rectContainsPoint(spriteRect,location)){
+                    now_1=1;
+                    return true;
+
+                }
+                return false;
+            },
+            onTouchEnded:function(touch, event){
+                now_1=0;
+                return true;
+            }
+        }, this.lane1);
+
         this.lane2 = new cc.Sprite(res.lane_png);
         this.lane2.attr({
             x: size.width / 2-120,
             y: size.height / 2
         });
         this.addChild(this.lane2, 3);
+        cc.eventManager.addListener({
+            event: cc.EventListener.TOUCH_ONE_BY_ONE,
+            onTouchBegan: function(touch, event){
+                var target=event.getCurrentTarget();
+                var location=target.convertToNodeSpace(touch.getLocation());
+                var spriteSize =target.getContentSize();
+                var spriteRect =cc.rect(0,0,spriteSize.width,spriteSize.height);
+                if(cc.rectContainsPoint(spriteRect,location)){
+                    now_2=1;
+                    return true;
+
+                }
+                return false;
+            },
+            onTouchEnded:function(touch, event){
+                now_2=0;
+                return true;
+            }
+        }, this.lane2);
 
         this.lane3 = new cc.Sprite(res.lane_png);
         this.lane3.attr({
@@ -572,7 +613,25 @@ var GAME_BASE = cc.Layer.extend({
             y: size.height / 2
         });
         this.addChild(this.lane3, 3);
+        cc.eventManager.addListener({
+            event: cc.EventListener.TOUCH_ONE_BY_ONE,
+            onTouchBegan: function(touch, event){
+                var target=event.getCurrentTarget();
+                var location=target.convertToNodeSpace(touch.getLocation());
+                var spriteSize =target.getContentSize();
+                var spriteRect =cc.rect(0,0,spriteSize.width,spriteSize.height);
+                if(cc.rectContainsPoint(spriteRect,location)){
+                    now_3=1;
+                    return true;
 
+                }
+                return false;
+            },
+            onTouchEnded:function(touch, event){
+                now_3=0;
+                return true;
+            }
+        }, this.lane3);
         this.lane4 = new cc.Sprite(res.lane2_png);
         this.lane4.attr({
             x: size.width / 2+130,
