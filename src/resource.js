@@ -55,7 +55,7 @@ var res = {
 
     combo:"res/combo.png",
     num:"res/num.png",
-
+    result_png:"res/result.png",
     chart:"res/AXION_H.json",
 };
 

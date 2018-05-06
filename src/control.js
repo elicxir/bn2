@@ -196,6 +196,22 @@ var D_PAD = cc.Layer.extend({
                 if (keyCode == cc.KEY.up) {
                     now_up=1;                              
                 }
+
+                if (keyCode == cc.KEY.s) {
+                    now_down=1;
+                }   
+
+                if (keyCode == cc.KEY.a) {
+                    now_left=1;                              
+                }
+               
+                if (keyCode == cc.KEY.d) {
+                    now_right=1;                              
+                }
+
+                if (keyCode == cc.KEY.w) {
+                    now_up=1;                              
+                }
                 
             },
 
@@ -230,6 +246,22 @@ var D_PAD = cc.Layer.extend({
                 }
 
                 if (keyCode == cc.KEY.up) {
+                    now_up=0;                              
+                }
+
+                if (keyCode == cc.KEY.s) {
+                    now_down=0;
+                } 
+
+                if (keyCode == cc.KEY.d) {
+                    now_left=0;                              
+                }
+               
+                if (keyCode == cc.KEY.a) {
+                    now_right=0;                              
+                }
+
+                if (keyCode == cc.KEY.w) {
                     now_up=0;                              
                 }
 
@@ -332,6 +364,25 @@ var D_PAD = cc.Layer.extend({
         });
         
         this.addChild(this.left, 7);
+        cc.eventManager.addListener({
+            event: cc.EventListener.TOUCH_ONE_BY_ONE,
+            onTouchBegan: function(touch, event){
+                var target=event.getCurrentTarget();
+                var location=target.convertToNodeSpace(touch.getLocation());
+                var spriteSize =target.getContentSize();
+                var spriteRect =cc.rect(0,0,spriteSize.width,spriteSize.height);
+                if(cc.rectContainsPoint(spriteRect,location)){
+                    now_left=1;
+                    return true;
+
+                }
+                return false;
+            },
+            onTouchEnded:function(touch, event){
+                now_left=0;
+                return true;
+            }
+        }, this.left);
 
         this.right = new cc.Sprite(res.dpad1_png);
         this.right.attr({
@@ -340,7 +391,25 @@ var D_PAD = cc.Layer.extend({
             scale:1.5,
             rotation: 180
         });
-        
+        cc.eventManager.addListener({
+            event: cc.EventListener.TOUCH_ONE_BY_ONE,
+            onTouchBegan: function(touch, event){
+                var target=event.getCurrentTarget();
+                var location=target.convertToNodeSpace(touch.getLocation());
+                var spriteSize =target.getContentSize();
+                var spriteRect =cc.rect(0,0,spriteSize.width,spriteSize.height);
+                if(cc.rectContainsPoint(spriteRect,location)){
+                    now_right=1;
+                    return true;
+
+                }
+                return false;
+            },
+            onTouchEnded:function(touch, event){
+                now_right=0;
+                return true;
+            }
+        }, this.right);
         this.addChild(this.right, 7);
 
         this.up = new cc.Sprite(res.dpad1_png);
@@ -350,7 +419,25 @@ var D_PAD = cc.Layer.extend({
             scale:1.5,
             rotation: 90
         });
-        
+        cc.eventManager.addListener({
+            event: cc.EventListener.TOUCH_ONE_BY_ONE,
+            onTouchBegan: function(touch, event){
+                var target=event.getCurrentTarget();
+                var location=target.convertToNodeSpace(touch.getLocation());
+                var spriteSize =target.getContentSize();
+                var spriteRect =cc.rect(0,0,spriteSize.width,spriteSize.height);
+                if(cc.rectContainsPoint(spriteRect,location)){
+                    now_up=1;
+                    return true;
+
+                }
+                return false;
+            },
+            onTouchEnded:function(touch, event){
+                now_up=0;
+                return true;
+            }
+        }, this.up);
         this.addChild(this.up, 7);
 
         this.down = new cc.Sprite(res.dpad1_png);
@@ -360,7 +447,25 @@ var D_PAD = cc.Layer.extend({
             scale:1.5,
             rotation: 270
         });
-        
+        cc.eventManager.addListener({
+            event: cc.EventListener.TOUCH_ONE_BY_ONE,
+            onTouchBegan: function(touch, event){
+                var target=event.getCurrentTarget();
+                var location=target.convertToNodeSpace(touch.getLocation());
+                var spriteSize =target.getContentSize();
+                var spriteRect =cc.rect(0,0,spriteSize.width,spriteSize.height);
+                if(cc.rectContainsPoint(spriteRect,location)){
+                    now_down=1;
+                    return true;
+
+                }
+                return false;
+            },
+            onTouchEnded:function(touch, event){
+                now_down=0;
+                return true;
+            }
+        }, this.down);
         this.addChild(this.down, 7);
 
         cc.eventManager.addListener({

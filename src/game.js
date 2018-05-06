@@ -1,7 +1,8 @@
 
 var gametime;
 var notesnum;
-var notes_dealt;
+var endflag;
+
 var musicpass="res/AXION.mp3";
 var note_sort=[];
 var note_data=[];
@@ -13,6 +14,8 @@ var scoreLabel;
 var startflag;
 
 var scoredata;
+
+
 
 function Calu_Y(just,nowtime,speed) {
     var y=80+(just-nowtime)*speed*0.01;
@@ -49,7 +52,7 @@ var SCORE= function(tap2,hold2){//holdnotesは123レーンのみで可能
 
     this.combo=0;
     this.maxcombo=0;
-
+    this.notes_dealt=0;
 
     this.add=function(sort,judge){
         switch(sort){
@@ -57,18 +60,19 @@ var SCORE= function(tap2,hold2){//holdnotesは123レーンのみで可能
                 this.tapjudge[judge]++;
                 if(judge!=0){
                     this.combo++;
+                    this.notes_dealt++;
                 }
                 else {
-                    this.combo=0;
+                    this.combo=0;this.notes_dealt++;
                 }
                 break;
             case 2:
                 this.holdjudge[judge]++;
                 if(judge!=0){
-                    this.combo++;
+                    this.combo++;this.notes_dealt++;
                 }
                 else {
-                    this.combo=0;
+                    this.combo=0;this.notes_dealt++;
                 }
                 break;
 
@@ -79,6 +83,7 @@ var SCORE= function(tap2,hold2){//holdnotesは123レーンのみで可能
             this.maxcombo=this.combo;
 
         }
+        
 
     }
     this.RE=function(){
@@ -90,7 +95,18 @@ var SCORE= function(tap2,hold2){//holdnotesは123レーンのみで可能
         else if(this.tap+this.hold==this.maxcombo){
             this.bonusflag=1;
         }
+        if(this.tap+this.hold==this.notes_dealt){
+            endflag=1;
+            re[0]=this.tapjudge[3]+this.holdjudge[3];
+            re[1]=this.tapjudge[2]+this.holdjudge[2];
+            re[2]=this.tapjudge[1]+this.holdjudge[1];
+            re[3]=this.tapjudge[0]+this.holdjudge[0];
+            re[4]=this.maxcombo;
+            re[5]=this.score;
 
+
+        }
+        
     }
     
 }
@@ -123,7 +139,7 @@ var TAP = function(lanenum,timems,speed){//lane 123 左側　4↑ 5↓ 6→ 7←
         }
 
         this.deal=function(keystate,time1000){
-            var lag=(time1000)-(this.time)-20;
+            var lag=(time1000)-(this.time);
 
            
 
@@ -281,14 +297,13 @@ var GAME_NOTES=cc.Layer.extend({
         //cc.audioEngine.preloadMusic(musicpass);
         //this.scheduleOnce(GAMESTART, 5);
 
-
+        endflag=0;
         this.note_graph=[];
         this.holdgraph_end=[];
         this.note_graph2=[];
         this.holdgraph_bar=[];
         
-        cc.audioEngine.playMusic(musicpass,false);
-        cc.audioEngine.pauseMusic();
+        
 
         cc.loader.loadJson(res.chart,function(err,data){
           if(!err){
@@ -345,7 +360,9 @@ var GAME_NOTES=cc.Layer.extend({
                 }
 
             }
-        }, 0.2);
+            cc.audioEngine.playMusic(musicpass,false);
+            cc.audioEngine.pauseMusic();
+        }, 1);
 
 
         this.scheduleOnce(function() {
@@ -353,7 +370,7 @@ var GAME_NOTES=cc.Layer.extend({
 
 
             startflag=1;
-        }, 3);
+        }, 4);
 
         this.scheduleUpdate();
         
@@ -364,7 +381,18 @@ var GAME_NOTES=cc.Layer.extend({
     update: function(dt) {   
         var flag=0;  
 
-        
+        if(endflag==1){
+            
+            this.scheduleOnce(function() {
+                cc.audioEngine.pauseMusic();
+
+            }, 4);
+            this.scheduleOnce(function() {
+                var s = cc.TransitionFade.create(2, new RESULT_S());
+                cc.director.runScene(s);
+            }, 4);
+    
+        }
 
 
         if(startflag==1){
@@ -478,6 +506,8 @@ var GAME_BASE = cc.Layer.extend({
         });
         this.addChild(this.lane6, 0);
 
+
+
         this.lane5 = new cc.Sprite(res.bg_png);
         this.lane5.attr({
             x: size.width / 2,
@@ -531,12 +561,51 @@ var GAME_BASE = cc.Layer.extend({
         });
         this.addChild(this.lane1, 3);
 
+        cc.eventManager.addListener({
+            event: cc.EventListener.TOUCH_ONE_BY_ONE,
+            onTouchBegan: function(touch, event){
+                var target=event.getCurrentTarget();
+                var location=target.convertToNodeSpace(touch.getLocation());
+                var spriteSize =target.getContentSize();
+                var spriteRect =cc.rect(0,0,spriteSize.width,spriteSize.height);
+                if(cc.rectContainsPoint(spriteRect,location)){
+                    now_1=1;
+                    return true;
+
+                }
+                return false;
+            },
+            onTouchEnded:function(touch, event){
+                now_1=0;
+                return true;
+            }
+        }, this.lane1);
+
         this.lane2 = new cc.Sprite(res.lane_png);
         this.lane2.attr({
             x: size.width / 2-120,
             y: size.height / 2
         });
         this.addChild(this.lane2, 3);
+        cc.eventManager.addListener({
+            event: cc.EventListener.TOUCH_ONE_BY_ONE,
+            onTouchBegan: function(touch, event){
+                var target=event.getCurrentTarget();
+                var location=target.convertToNodeSpace(touch.getLocation());
+                var spriteSize =target.getContentSize();
+                var spriteRect =cc.rect(0,0,spriteSize.width,spriteSize.height);
+                if(cc.rectContainsPoint(spriteRect,location)){
+                    now_2=1;
+                    return true;
+
+                }
+                return false;
+            },
+            onTouchEnded:function(touch, event){
+                now_2=0;
+                return true;
+            }
+        }, this.lane2);
 
         this.lane3 = new cc.Sprite(res.lane_png);
         this.lane3.attr({
@@ -544,7 +613,25 @@ var GAME_BASE = cc.Layer.extend({
             y: size.height / 2
         });
         this.addChild(this.lane3, 3);
+        cc.eventManager.addListener({
+            event: cc.EventListener.TOUCH_ONE_BY_ONE,
+            onTouchBegan: function(touch, event){
+                var target=event.getCurrentTarget();
+                var location=target.convertToNodeSpace(touch.getLocation());
+                var spriteSize =target.getContentSize();
+                var spriteRect =cc.rect(0,0,spriteSize.width,spriteSize.height);
+                if(cc.rectContainsPoint(spriteRect,location)){
+                    now_3=1;
+                    return true;
 
+                }
+                return false;
+            },
+            onTouchEnded:function(touch, event){
+                now_3=0;
+                return true;
+            }
+        }, this.lane3);
         this.lane4 = new cc.Sprite(res.lane2_png);
         this.lane4.attr({
             x: size.width / 2+130,
