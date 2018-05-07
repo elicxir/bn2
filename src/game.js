@@ -380,7 +380,7 @@ var GAME_NOTES=cc.Layer.extend({
         this.note_graph2=[];
         this.holdgraph_bar=[];
         
-        
+        this.music;
 
         cc.loader.loadJson(res.chart,function(err,data){
 
@@ -437,8 +437,8 @@ var GAME_NOTES=cc.Layer.extend({
                 }
 
             }
-            cc.audioEngine.playMusic(res.bgm,false);
-            cc.audioEngine.pauseMusic();
+            this.music= cc.audioEngine.playEffect(res.bgm,false);
+            cc.audioEngine.pauseEffect(this.music);
         }, 0.12);
 
         this.scheduleUpdate();
@@ -447,7 +447,7 @@ var GAME_NOTES=cc.Layer.extend({
         return true;
     },
     start:function(){
-        cc.audioEngine.resumeMusic();
+        cc.audioEngine.resumeEffect(this.music);
 
 
         startflag=1;
