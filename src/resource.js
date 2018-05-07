@@ -25,17 +25,20 @@
 var gameres = {
     back_png : "res/bg.png",
     title_png : "res/title.png",
+
 };
 
-
 var res = {
+    musicgraph: "res/axion.png",
+    bgm:"res/AXION.mp3",
+    chart:"res/AXION_H.json",
     back_png : "res/title2.png",
     title_png : "res/title.png",
     lane_png : "res/base1.png",
   
     lane2_png : "res/base2.png",
     bg_png : "res/bg.png",
-
+    b_png:"res/button.png",
     dpad1_png : "res/ctr.png",
     dpad2_png : "res/enter.png",
 
@@ -55,11 +58,15 @@ var res = {
 
     combo:"res/combo.png",
     num:"res/num.png",
-    result_png:"res/result.png",
-    chart:"res/AXION_H.json",
+    result_png:"res/result.png"
 };
 
 var g_resources = [];
 for (var i in res) {
     g_resources.push(res[i]);
+}
+
+var g2_resources = [];
+for (var i in gameres) {
+    g2_resources.push(gameres[i]);
 }

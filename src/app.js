@@ -1,9 +1,14 @@
 function GO_NEXT(name){
-    var s = cc.TransitionFade.create(2, new name());
+    //var s = cc.TransitionFade.create(2, new name());
     
-    cc.director.runScene(s);
-   
+    //cc.director.runScene(s);
+    cc.LoaderScene.preload(g_resources, function () {
+        cc.director.runScene(new name());
+    }, this);
 }
+
+
+
 
 var TITLE_L = cc.Layer.extend({
     sprite:null,
