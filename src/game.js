@@ -4,8 +4,14 @@ var notesnum;
 var endflag;
 
 var musicpass="res/AXION.mp3";
+var graphpass="res/axion.png";//画像　正方形;
+var titlename="AXION";
+var chartpass="res/AXION.json";
+
 var note_sort=[];
 var note_data=[];
+
+
 
 var seplay=0;
 
@@ -15,23 +21,116 @@ var startflag;
 
 var scoredata;
 
+var side=0;//サイドの選択
+var touch_c=0;//タッチ操作最適化(1でボタンとレーンのx座標をそろえる)
+
+var START_L=cc.Layer.extend({
+    sprite:null,
+       
+    ctor:function () {
+        this._super();
+        var size = cc.winSize;
+        var flag=0;
+
+        
+
+        this.sprite2 = new cc.Sprite(res.musicgraph);
+        this.sprite2.attr({
+            x: size.width / 2,
+            y: size.height / 2,
+            scale: 0.5
+        });
+        this.addChild(this.sprite2, 1,1);
+
+        this.Label = new cc.LabelTTF(titlename, "Arial", 60);       
+             this.Label.x = size.width / 2;
+            this.Label.y = 100;
+            this.Label.setColor( cc.color(255, 255, 255, 0))
+        this.addChild(this.Label, 5,1);
+
+        this.rect = new cc.DrawNode();
+        this.rect.drawRect(cc.p(0, 0), cc.p(960, 540), cc.color(0, 0, 0, 230));
+ 
+        this.addChild(this.rect,0,1);
+
+        //this.removeChildByTag(1,true);
+
+        function REMOVE(){
+            layer2.start();
+             
+        layer6.removeChild(layer6.rect, true);
+        layer6.removeChild(layer6.sprite2, true);
+        layer6.removeChild(layer6.Label, true);
+    
+        }
+
+        
+
+        cc.eventManager.addListener({
+            event: cc.EventListener.KEYBOARD,
+            onKeyPressed: function(keyCode, event) {
+                 
+                if (keyCode == cc.KEY.enter) {
+                    if(flag==0){
+                        REMOVE();
+                        flag++;
+                    }
+                }
+
+                
+            },
+                
+        }, this);
+
+        cc.eventManager.addListener({
+            event: cc.EventListener.TOUCH_ONE_BY_ONE,
+            //タッチ開始時の処理
+            onTouchBegan: function(touch, event){
+                if(flag==0){
+                    REMOVE();
+                    flag++;
+                }
+                return true;
+            }
+            //タッチ移動時の処理
+           
+           
+        }, this);
+        return true;
+    }
+            
+});
 
 
 function Calu_Y(just,nowtime,speed) {
-    var y=80+(just-nowtime)*speed*0.01;
+    var y=80+5+(just-nowtime)*speed*0.01;
     return y;
 }
 
 function Calu_X(lane){
-    switch(lane){
-        case 1:return 260;break;
-        case 2:return 360;break;
-        case 3:return 460;break;
-        case 4:return 610;break;
-        case 5:return 610;break;
-        case 6:return 610;break;
-        case 7:return 610;break;
+    if(side==0){
+        switch(lane){
+            case 1:return 260;break;
+            case 2:return 360;break;
+            case 3:return 460;break;
+            case 4:return 610;break;
+            case 5:return 610;break;
+            case 6:return 610;break;
+            case 7:return 610;break;
+        }
     }
+    else if(side==1){
+        switch(lane){
+            case 1:return 960-460;break;
+            case 2:return 960-360;break;
+            case 3:return 960-260;break;
+            case 4:return 960-610;break;
+            case 5:return 960-610;break;
+            case 6:return 960-610;break;
+            case 7:return 960-610;break;
+        }
+    }
+    
 
 }
 
@@ -249,33 +348,9 @@ var HOLD = function(lanenum,startt,endt,speed){//holdnotesは123レーンのみ�
         }
 }
 
-/*function READY(name){
-    var s = cc.TransitionFade.create(2, new name());
-    cc.director.runScene(s);
-   
-}
-*/
-
-
-
 var tapnum;
 var tapnote;
 var holdnum;
-
-var SCORESHOW=cc.Layer.extend({
-    sprite:null,
-    ctor:function () {
-        this._super();
-        var size = cc.winSize;
-
-
-       
-
-
-        return true;
-    }
-});
-
 
 var sprite21;
 var GAME_NOTES=cc.Layer.extend({
@@ -285,6 +360,8 @@ var GAME_NOTES=cc.Layer.extend({
         this._super();
 
         var size = cc.winSize;
+
+        gametime=0;
 
         tapnum=0;
         holdnum=0;
@@ -303,9 +380,10 @@ var GAME_NOTES=cc.Layer.extend({
         this.note_graph2=[];
         this.holdgraph_bar=[];
         
-        
+        this.music;
 
         cc.loader.loadJson(res.chart,function(err,data){
+
           if(!err){
             for(var int =0;int<data.length;int++){
                 note_sort.push(data[int].sort);
@@ -319,7 +397,6 @@ var GAME_NOTES=cc.Layer.extend({
                     holdnum++;this.holdgraph_bar.push(new cc.Sprite());this.holdgraph_end.push(new cc.Sprite());
                 }
             }   
-
             scoredata=new SCORE(tapnum,holdnum);
             notesnum=tapnum+holdnum;
           }
@@ -360,24 +437,22 @@ var GAME_NOTES=cc.Layer.extend({
                 }
 
             }
-            cc.audioEngine.playMusic(musicpass,false);
-            cc.audioEngine.pauseMusic();
-        }, 1);
-
-
-        this.scheduleOnce(function() {
-            cc.audioEngine.resumeMusic();
-
-
-            startflag=1;
-        }, 4);
+            this.music= cc.audioEngine.playEffect(res.bgm,false);
+            cc.audioEngine.pauseEffect(this.music);
+        }, 0.12);
 
         this.scheduleUpdate();
         
 
         return true;
     },
-   
+    start:function(){
+        cc.audioEngine.resumeEffect(this.music);
+
+
+        startflag=1;
+    },
+
     update: function(dt) {   
         var flag=0;  
 
@@ -485,7 +560,31 @@ var GAME_NOTES=cc.Layer.extend({
     }
 });
 
+var GAME_BASE2 = cc.Layer.extend({
+    sprite:null,
+    ctor:function () {
+        this._super();
+        var size = cc.winSize;
 
+        this.bg = new cc.Sprite(res.back_png);
+        this.bg.attr({
+            x: size.width / 2,
+            y: size.height / 2
+        });
+        this.addChild(this.bg, 0);
+
+
+
+        this.bg2 = new cc.Sprite(res.musicgraph);//
+        this.bg2.attr({
+            x: size.width / 2,
+            y: size.height / 2
+        });
+        this.bg2.setScale(1.35,1.35);
+        this.addChild(this.bg2, 0);       
+        return true;
+    }
+});
 
 
 var GAME_BASE = cc.Layer.extend({
@@ -496,25 +595,6 @@ var GAME_BASE = cc.Layer.extend({
 
         gametime=0;
         notes_dealt=0;
-
-        this.s_s=0;
-
-        this.lane6 = new cc.Sprite(res.back_png);
-        this.lane6.attr({
-            x: size.width / 2,
-            y: size.height / 2
-        });
-        this.addChild(this.lane6, 0);
-
-
-
-        this.lane5 = new cc.Sprite(res.bg_png);
-        this.lane5.attr({
-            x: size.width / 2,
-            y: size.height / 2
-        });
-        this.lane5.setScale(2.4,2.4);
-        this.addChild(this.lane5, 0);
 
         this.scorest=[new cc.Sprite(),new cc.Sprite(),new cc.Sprite(),new cc.Sprite(),new cc.Sprite(),new cc.Sprite(),new cc.Sprite()];
         for(var t=0;t<7;t++){
@@ -556,85 +636,31 @@ var GAME_BASE = cc.Layer.extend({
 
         this.lane1 = new cc.Sprite(res.lane_png);
         this.lane1.attr({
-            x: size.width / 2-220,
+            x: Calu_X(1),
             y: size.height / 2
         });
         this.addChild(this.lane1, 3);
 
-        cc.eventManager.addListener({
-            event: cc.EventListener.TOUCH_ONE_BY_ONE,
-            onTouchBegan: function(touch, event){
-                var target=event.getCurrentTarget();
-                var location=target.convertToNodeSpace(touch.getLocation());
-                var spriteSize =target.getContentSize();
-                var spriteRect =cc.rect(0,0,spriteSize.width,spriteSize.height);
-                if(cc.rectContainsPoint(spriteRect,location)){
-                    now_1=1;
-                    return true;
-
-                }
-                return false;
-            },
-            onTouchEnded:function(touch, event){
-                now_1=0;
-                return true;
-            }
-        }, this.lane1);
+        
 
         this.lane2 = new cc.Sprite(res.lane_png);
         this.lane2.attr({
-            x: size.width / 2-120,
+            x: Calu_X(2),
             y: size.height / 2
         });
         this.addChild(this.lane2, 3);
-        cc.eventManager.addListener({
-            event: cc.EventListener.TOUCH_ONE_BY_ONE,
-            onTouchBegan: function(touch, event){
-                var target=event.getCurrentTarget();
-                var location=target.convertToNodeSpace(touch.getLocation());
-                var spriteSize =target.getContentSize();
-                var spriteRect =cc.rect(0,0,spriteSize.width,spriteSize.height);
-                if(cc.rectContainsPoint(spriteRect,location)){
-                    now_2=1;
-                    return true;
-
-                }
-                return false;
-            },
-            onTouchEnded:function(touch, event){
-                now_2=0;
-                return true;
-            }
-        }, this.lane2);
+        
 
         this.lane3 = new cc.Sprite(res.lane_png);
         this.lane3.attr({
-            x: size.width / 2-20,
+            x: Calu_X(3),
             y: size.height / 2
         });
         this.addChild(this.lane3, 3);
-        cc.eventManager.addListener({
-            event: cc.EventListener.TOUCH_ONE_BY_ONE,
-            onTouchBegan: function(touch, event){
-                var target=event.getCurrentTarget();
-                var location=target.convertToNodeSpace(touch.getLocation());
-                var spriteSize =target.getContentSize();
-                var spriteRect =cc.rect(0,0,spriteSize.width,spriteSize.height);
-                if(cc.rectContainsPoint(spriteRect,location)){
-                    now_3=1;
-                    return true;
 
-                }
-                return false;
-            },
-            onTouchEnded:function(touch, event){
-                now_3=0;
-                return true;
-            }
-        }, this.lane3);
         this.lane4 = new cc.Sprite(res.lane2_png);
         this.lane4.attr({
-            x: size.width / 2+130,
+            x: Calu_X(4),
             y: size.height / 2
         });
         this.addChild(this.lane4, 3);
@@ -696,7 +722,9 @@ var GAME_BASE = cc.Layer.extend({
 
 
 
-var layer1
+var layer2;
+var layer;
+var layer6;
 var GAME_S = cc.Scene.extend({
     onEnter:function () {
         this._super();
@@ -705,14 +733,19 @@ var GAME_S = cc.Scene.extend({
         //
 
         var layer = new GAME_BASE();
-        
+        var layer5 = new GAME_BASE2();
+layer6=new START_L();
         layer1=new EFFECT();
-        var layer2=new GAME_NOTES(); 
+        layer2=new GAME_NOTES(); 
         layer2.init();
         var layer3=new D_PAD();
+
+       this.addChild(layer5);
+       this.addChild(layer3);
+
         this.addChild(layer);
         this.addChild(layer1);
         this.addChild(layer2);
-        this.addChild(layer3);
+        this.addChild(layer6);
     }
 });

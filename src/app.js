@@ -1,9 +1,14 @@
 function GO_NEXT(name){
-    var s = cc.TransitionFade.create(2, new name());
+    //var s = cc.TransitionFade.create(2, new name());
     
-    cc.director.runScene(s);
-   
+    //cc.director.runScene(s);
+    cc.LoaderScene.preload(g_resources, function () {
+        cc.director.runScene(new name());
+    }, this);
 }
+
+
+
 
 var TITLE_L = cc.Layer.extend({
     sprite:null,
@@ -11,20 +16,20 @@ var TITLE_L = cc.Layer.extend({
         this._super();
         var size = cc.winSize;
     
-        var Label = new cc.LabelTTF("ver0.0.1", "Arial", 42);       
+        var Label = new cc.LabelTTF("ver0.0.2", "Arial", 42);       
         Label.x = size.width / 2+190;
         Label.y = 70;
         Label.setColor( cc.color(0, 0, 0, 20))
         this.addChild(Label, 5);
 
-        this.sprite = new cc.Sprite(res.back_png);
+        this.sprite = new cc.Sprite(res2.back_png);
         this.sprite.attr({
             x: size.width / 2,
             y: size.height / 2
         });
         this.addChild(this.sprite, 0);
 
-        this.sprite2 = new cc.Sprite(res.title_png);
+        this.sprite2 = new cc.Sprite(res2.title_png);
         this.sprite2.attr({
             x: size.width / 2,
             y: size.height / 2
