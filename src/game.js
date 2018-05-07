@@ -478,7 +478,7 @@ var GAME_NOTES=cc.Layer.extend({
 
 
             if(seplay>0){
-                cc.audioEngine.playEffect(res.se1,false);
+               // cc.audioEngine.playEffect(res.se1,false);
                 seplay=0;
             }
             
