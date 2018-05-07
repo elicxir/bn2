@@ -238,7 +238,7 @@ var TAP = function(lanenum,timems,speed){//lane 123 左側　4↑ 5↓ 6→ 7←
         }
 
         this.deal=function(keystate,time1000){
-            var lag=(time1000)-(this.time);
+            var lag=(time1000)-(this.time)-34;
 
            
 
@@ -488,7 +488,7 @@ var GAME_NOTES=cc.Layer.extend({
 
                     if(note_data[e].seflag==0){
                         
-                            if((gametime*1000)-(note_data[e].time)>-14){
+                            if((gametime*1000)-(note_data[e].time)+34>0){
                                 seplay++;
                                 note_data[e].seflag++;
                             }
