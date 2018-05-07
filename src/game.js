@@ -22,7 +22,7 @@ var startflag;
 var scoredata;
 
 var side=0;//サイドの選択
-var touch_c=1;//タッチ操作の可否
+var touch_c=0;//タッチ操作最適化(1でボタンとレーンのx座標をそろえる)
 
 var START_L=cc.Layer.extend({
     sprite:null,
@@ -103,7 +103,7 @@ var START_L=cc.Layer.extend({
 
 
 function Calu_Y(just,nowtime,speed) {
-    var y=80+(just-nowtime)*speed*0.01;
+    var y=80+5+(just-nowtime)*speed*0.01;
     return y;
 }
 

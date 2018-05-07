@@ -22,14 +22,14 @@ var TITLE_L = cc.Layer.extend({
         Label.setColor( cc.color(0, 0, 0, 20))
         this.addChild(Label, 5);
 
-        this.sprite = new cc.Sprite(res.back_png);
+        this.sprite = new cc.Sprite(res2.back_png);
         this.sprite.attr({
             x: size.width / 2,
             y: size.height / 2
         });
         this.addChild(this.sprite, 0);
 
-        this.sprite2 = new cc.Sprite(res.title_png);
+        this.sprite2 = new cc.Sprite(res2.title_png);
         this.sprite2.attr({
             x: size.width / 2,
             y: size.height / 2

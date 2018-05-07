@@ -22,22 +22,23 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-var gameres = {
-    back_png : "res/bg.png",
+var res2 = {
+    back_png : "res/title2.png",
     title_png : "res/title.png",
 
 };
 
 var res = {
     musicgraph: "res/axion.png",
-    bgm:"res/AXION.mp3",
-    chart:"res/AXION_H.json",
     back_png : "res/title2.png",
-    title_png : "res/title.png",
+
+    bgm:"res/AXION.mp3",
+
+    chart:"res/AXION_H.json",
+
     lane_png : "res/base1.png",
-  
     lane2_png : "res/base2.png",
-    bg_png : "res/bg.png",
+
     b_png:"res/button.png",
     dpad1_png : "res/ctr.png",
     dpad2_png : "res/enter.png",
@@ -49,7 +50,6 @@ var res = {
     down_png : "res/down.png",
 
     se1:"res/hit.wav",
-    se2:"res/cursor8.mp3",
 
     p_ef:"res/ef.png",
     gr_ef:"res/gef.png",
@@ -67,6 +67,6 @@ for (var i in res) {
 }
 
 var g2_resources = [];
-for (var i in gameres) {
-    g2_resources.push(gameres[i]);
+for (var i in res2) {
+    g2_resources.push(res2[i]);
 }
