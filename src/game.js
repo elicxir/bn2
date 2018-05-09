@@ -198,10 +198,18 @@ var SCORE= function(tap2,hold2){//holdnotesは123レーンのみで可能
                     this.combo++;this.notes_dealt++;
                 }
                 else {
+                    this.combo=0;this.notes_dealt++;this.notes_dealt++;
+                }
+                break;
+            case 3:
+                this.holdjudge[judge]++;
+                if(judge!=0){
+                    this.combo++;this.notes_dealt++;
+                }
+                else {
                     this.combo=0;this.notes_dealt++;
                 }
                 break;
-
 
         }
 
@@ -221,7 +229,7 @@ var SCORE= function(tap2,hold2){//holdnotesは123レーンのみで可能
         else if(this.tap+this.hold*2==this.maxcombo){
             this.bonusflag=1;
         }
-        if(this.tap+this.hold*2==this.notes_dealt){
+        if(this.tap+this.hold==this.notes_dealt){
             endflag=1;
             
             re[0]=this.tapjudge[3]+this.holdjudge[3];
@@ -417,7 +425,6 @@ var GAME_NOTES=cc.Layer.extend({
         holdnum=0;
 
         notesnum=0;
-        notes_dealt=0;
         
         startflag=0;
         this.audioEngine = cc.audioEngine;
@@ -646,16 +653,16 @@ var GAME_NOTES=cc.Layer.extend({
                         switch(flag){
                             case 1:
                                 layer1.add(0,note_data[e].lane);this.note_graph[e].init();
-                                scoredata.add(1,3);
+                                scoredata.add(2,3);
                                 break;
                             case 2:
-                                layer1.add(1,note_data[e].lane); scoredata.add(1,2);this.note_graph[e].init();
+                                layer1.add(1,note_data[e].lane); scoredata.add(2,2);this.note_graph[e].init();
                                 break;
                             case 3:
-                                layer1.add(2,note_data[e].lane); scoredata.add(1,1);   this.note_graph[e].init();   
+                                layer1.add(2,note_data[e].lane); scoredata.add(2,1);   this.note_graph[e].init();   
                                 break;
                             case 4:
-                                layer1.add(3,note_data[e].lane);scoredata.add(1,0);this.note_graph[e].init();
+                                layer1.add(3,note_data[e].lane);scoredata.add(2,0);this.note_graph[e].init();
                                 break;
                         }
 
@@ -675,16 +682,16 @@ var GAME_NOTES=cc.Layer.extend({
                         switch(flag){
                             case 5:
                                 layer1.add(0,note_data[e].lane);this.note_graph[e].init();
-                                scoredata.add(1,3);
+                                scoredata.add(3,3);
                                 break;
                             case 6:
-                                layer1.add(1,note_data[e].lane); scoredata.add(1,2);this.note_graph[e].init();
+                                layer1.add(1,note_data[e].lane); scoredata.add(3,2);this.note_graph[e].init();
                                 break;
                             case 7:
-                                layer1.add(2,note_data[e].lane); scoredata.add(1,1);   this.note_graph[e].init();   
+                                layer1.add(2,note_data[e].lane); scoredata.add(3,1);   this.note_graph[e].init();   
                                 break;
                             case 8:
-                                layer1.add(3,note_data[e].lane);scoredata.add(1,0);this.note_graph[e].init();
+                                layer1.add(3,note_data[e].lane);scoredata.add(3,0);this.note_graph[e].init();
                                 break;
                         }
                         
@@ -745,7 +752,6 @@ var GAME_BASE = cc.Layer.extend({
         var size = cc.winSize;
 
         gametime=0;
-        notes_dealt=0;
 
         this.scorest=[new cc.Sprite(),new cc.Sprite(),new cc.Sprite(),new cc.Sprite(),new cc.Sprite(),new cc.Sprite(),new cc.Sprite()];
         for(var t=0;t<7;t++){
