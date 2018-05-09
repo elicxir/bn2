@@ -13,7 +13,7 @@ var EFFECT = cc.Layer.extend({
             if(this.efsort[c]>=0&&this.eflane[c]>=0&&this.eftime[c]>=0){
                 this.ef[c].setSpriteFrame(this.efframe[this.efsort[c]*27+this.eftime[c]]);
                 this.ef[c].attr({
-                    x:Calu_X(this.eflane[c]),
+                    x:Calu_X(this.eflane[c],side),
                     y:80+110
                 });
 

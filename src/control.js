@@ -347,7 +347,7 @@ var D_PAD = cc.Layer.extend({
 
         this.b1 = new cc.Sprite(res.b_png);
         this.b1.attr({
-            x: 85,
+            x: Calu_X(1,side%2+2),
             y: 110,
             
         });
@@ -375,11 +375,13 @@ var D_PAD = cc.Layer.extend({
         this.addChild(this.b1, 7);
 
         this.b2 = new cc.Sprite(res.b_png);
+
         this.b2.attr({
-            x: 85+160,
+            x: Calu_X(2,side%2+2),
             y: 110,
             
         });
+        
         cc.eventManager.addListener({
             event: cc.EventListener.TOUCH_ONE_BY_ONE,
             onTouchBegan: function(touch, event){
@@ -402,8 +404,9 @@ var D_PAD = cc.Layer.extend({
         this.addChild(this.b2, 7);
 
         this.b3 = new cc.Sprite(res.b_png);
+        
         this.b3.attr({
-            x: 85+160+160,
+            x: Calu_X(3,side%2+2),
             y: 110,
             
         });
@@ -430,7 +433,7 @@ var D_PAD = cc.Layer.extend({
 
         this.enter = new cc.Sprite(res.dpad2_png);
         this.enter.attr({
-            x: 810,
+            x: Calu_X(10,side%2),
             y: 170,
             scale:1.6
 
@@ -441,7 +444,7 @@ var D_PAD = cc.Layer.extend({
 
         this.left = new cc.Sprite(res.dpad1_png);
         this.left.attr({
-            x: 725,
+            x: Calu_X(10,side%2)-85,
             y: 170,
             scale:1.6,
         });
@@ -469,7 +472,7 @@ var D_PAD = cc.Layer.extend({
 
         this.right = new cc.Sprite(res.dpad1_png);
         this.right.attr({
-            x: 895,
+            x: Calu_X(10,side%2)+85,
             y: 170,
             scale:1.6,
             rotation: 180
@@ -497,7 +500,7 @@ var D_PAD = cc.Layer.extend({
 
         this.up = new cc.Sprite(res.dpad1_png);
         this.up.attr({
-            x: 810,
+            x: Calu_X(10,side%2),
             y: 255,
             scale:1.6,
             rotation: 90
@@ -525,7 +528,7 @@ var D_PAD = cc.Layer.extend({
 
         this.down = new cc.Sprite(res.dpad1_png);
         this.down.attr({
-            x: 810,
+            x: Calu_X(10,side%2),
             y: 85,
             scale:1.6,
             rotation: 270
