@@ -16,7 +16,7 @@ var TITLE_L = cc.Layer.extend({
         this._super();
         var size = cc.winSize;
     
-        var Label = new cc.LabelTTF("ver0.3.2", "Arial", 42);       
+        var Label = new cc.LabelTTF("ver0.3.3", "Arial", 42);       
         Label.x = size.width / 2+190;
         Label.y = 70;
         Label.setColor( cc.color(0, 0, 0, 20))

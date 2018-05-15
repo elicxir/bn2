@@ -537,29 +537,27 @@ var GAME_NOTES=cc.Layer.extend({
             }
             
 
-            
+            cc.audioEngine.playEffect(res.se1,false);
 
-        }, 0.3);
+            
+        }, 0.7);
 
         this.scheduleUpdate();
 
-        cc.audioEngine.setEffectsVolume(0.0);
-        this.music1= cc.audioEngine.playMusic(musicpass,false);
-        cc.audioEngine.playEffect(res.se1,false);
+
         return true;
     },
     start:function(){
 
-       
+        this.music= cc.audioEngine.playMusic(musicpass,false);
         
         this.scheduleOnce(function() {
             
-            cc.audioEngine.setEffectsVolume(1.0);
-            this.music= cc.audioEngine.playEffect(musicpass,false);
+            cc.audioEngine.resumeMusic() 
             gametime=0;
             startflag=1;
 
-        },1.0)
+        },1.5)
         
     },
 
@@ -752,7 +750,12 @@ var GAME_NOTES=cc.Layer.extend({
             }
         } 
         else {
-            cc.audioEngine.stopMusic();
+            if (cc.audioEngine.isMusicPlaying()) {
+                cc.audioEngine.pauseMusic() ;
+
+            }
+           
+
 
         }
             
