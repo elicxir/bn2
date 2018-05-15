@@ -6,6 +6,7 @@ var endflag;
 var offset=0;//スタート時間のずれ
 var c_lag=0;//判定のずれ
 
+var loadf=0;
 
 
 var note_sort=[];
@@ -25,13 +26,27 @@ var side=2;//サイドの選択
 
 var START_L=cc.Layer.extend({
     sprite:null,
+
+    REMOVE:function(){
+        
+            this.scheduleOnce(function() {
+                layer2.start();
+
+            },0.5)
+             
+            this.removeChild(this.rect, true);
+            this.removeChild(this.sprite2, true);
+            this.removeChild(this.Label, true);
+    
+        
+    },
        
     ctor:function () {
         this._super();
         var size = cc.winSize;
         var flag=0;
 
-        
+        loadf=0;
 
         this.sprite2 = new cc.Sprite(graphpass);
         this.sprite2.attr({
@@ -54,15 +69,7 @@ var START_L=cc.Layer.extend({
 
         //this.removeChildByTag(1,true);
 
-        function REMOVE(){
-            
-            layer2.start();
-             
-        layer6.removeChild(layer6.rect, true);
-        layer6.removeChild(layer6.sprite2, true);
-        layer6.removeChild(layer6.Label, true);
-    
-        }
+        
 
         
 
@@ -71,8 +78,8 @@ var START_L=cc.Layer.extend({
             onKeyPressed: function(keyCode, event) {
                  
                 if (keyCode == cc.KEY.enter) {
-                    if(flag==0){
-                        REMOVE();
+                    if(flag==0&&loadf==1){
+                        layer6.REMOVE();
                         flag++;
                     }
                 }
@@ -86,8 +93,8 @@ var START_L=cc.Layer.extend({
             event: cc.EventListener.TOUCH_ONE_BY_ONE,
             //タッチ開始時の処理
             onTouchBegan: function(touch, event){
-                if(flag==0){
-                    REMOVE();
+                if(flag==0&&loadf==1){
+                    layer6.REMOVE();
                     flag++;
                 }
                 return true;
@@ -537,10 +544,9 @@ var GAME_NOTES=cc.Layer.extend({
             }
             
 
-            cc.audioEngine.playEffect(res.se1,false);
-
+            this.music= cc.audioEngine.playMusic(musicpass,false);
             
-        }, 0.7);
+        }, 0.4);
 
         this.scheduleUpdate();
 
@@ -548,8 +554,9 @@ var GAME_NOTES=cc.Layer.extend({
         return true;
     },
     start:function(){
+        cc.audioEngine.playEffect(res.se1,false);
 
-        this.music= cc.audioEngine.playMusic(musicpass,false);
+        
         
         this.scheduleOnce(function() {
             
@@ -557,7 +564,7 @@ var GAME_NOTES=cc.Layer.extend({
             gametime=0;
             startflag=1;
 
-        },1.5)
+        },0.4)
         
     },
 
@@ -752,6 +759,11 @@ var GAME_NOTES=cc.Layer.extend({
         else {
             if (cc.audioEngine.isMusicPlaying()) {
                 cc.audioEngine.pauseMusic() ;
+                if(loadf==0){
+                    cc.audioEngine.playEffect(res.se1,false);
+                    loadf=1;
+                }
+                
 
             }
            
