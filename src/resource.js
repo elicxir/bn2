@@ -25,16 +25,27 @@
 var res2 = {
     back_png : "res/title2.png",
     title_png : "res/title.png",
-
+    back_png : "res/title2.png",
+    flame:"res/waku.png",
+    data : "res/MUSIC.json",
+    c : "res/1.png",
+    waku2:"res/waku2.png"
 };
 
+var musicpass="";
+var graphpass="";//画像　正方形;
+var titlename="";
+var chartpass="";
+
+var mres={
+    graph:graphpass,
+    chart:chartpass,
+    music:musicpass
+
+};
 var res = {
-    musicgraph: "res/axion.png",
+    
     back_png : "res/title2.png",
-
-    bgm:"res/AXION.mp3",
-
-    chart:"res/AXION_H.json",
 
     lane_png : "res/base1.png",
     lane2_png : "res/base2.png",
@@ -58,7 +69,12 @@ var res = {
 
     combo:"res/combo.png",
     num:"res/num.png",
-    result_png:"res/result.png"
+    result_png:"res/result.png",
+    easy:"res/easy.png",
+    basic:"res/basic.png",
+
+    hard:"res/hard.png",
+
 };
 
 var g_resources = [];
@@ -69,4 +85,8 @@ for (var i in res) {
 var g2_resources = [];
 for (var i in res2) {
     g2_resources.push(res2[i]);
+}
+var m_resources = [];
+for (var i in mres) {
+    m_resources.push(mres[i]);
 }

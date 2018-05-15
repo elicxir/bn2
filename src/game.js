@@ -6,10 +6,7 @@ var endflag;
 var offset=0;//スタート時間のずれ
 var c_lag=0;//判定のずれ
 
-var musicpass="res/AXION.mp3";
-var graphpass="res/axion.png";//画像　正方形;
-var titlename="AXION";
-var chartpass="res/AXION.json";
+
 
 var note_sort=[];
 var note_data=[];
@@ -36,7 +33,7 @@ var START_L=cc.Layer.extend({
 
         
 
-        this.sprite2 = new cc.Sprite(res.musicgraph);
+        this.sprite2 = new cc.Sprite(graphpass);
         this.sprite2.attr({
             x: size.width / 2,
             y: size.height / 2,
@@ -44,7 +41,7 @@ var START_L=cc.Layer.extend({
         });
         this.addChild(this.sprite2, 1,1);
 
-        this.Label = new cc.LabelTTF(titlename, "Arial", 60);       
+        this.Label = new cc.LabelTTF(MUSICDATA[nowselect].title, "Arial", 60);       
              this.Label.x = size.width / 2;
             this.Label.y = 100;
             this.Label.setColor( cc.color(255, 255, 255, 0))
@@ -58,6 +55,7 @@ var START_L=cc.Layer.extend({
         //this.removeChildByTag(1,true);
 
         function REMOVE(){
+            
             layer2.start();
              
         layer6.removeChild(layer6.rect, true);
@@ -139,8 +137,8 @@ function Calu_X(lane,mode){
     else if(mode==2){
         switch(lane){
             case 1:return 85;break;
-            case 2:return 245;break;
-            case 3:return 405;break;
+            case 2:return 250;break;
+            case 3:return 415;break;
             case 4:return 610;break;
             case 5:return 610;break;
             case 6:return 610;break;
@@ -149,8 +147,8 @@ function Calu_X(lane,mode){
     }
     else if(mode==3){
         switch(lane){
-            case 1:return 960-405;break;
-            case 2:return 960-245;break;
+            case 1:return 960-415;break;
+            case 2:return 960-250;break;
             case 3:return 960-85;break;
             case 4:return 960-610;break;
             case 5:return 960-610;break;
@@ -165,8 +163,8 @@ var SCORE= function(tap2,hold2){//holdnotesは123レーンのみで可能
     this.tap=tap2;
     this.hold=hold2*2;
 
-    this.objectnum=(tap2*100+hold2*150);
-    this.bonus=(1000000-5000)%( this.objectnum)+5000;
+    this.objectnum=(this.tap*8+this.hold*6);
+    this.bonus=(1000000-5000)%(this.objectnum)+5000;
 
     this.point=(1000000-this.bonus)/this.objectnum;
 
@@ -221,7 +219,7 @@ var SCORE= function(tap2,hold2){//holdnotesは123レーンのみで可能
 
     }
     this.RE=function(){
-        this.score=this.point*(this.tapjudge[1]*40+this.tapjudge[2]*70+this.tapjudge[3]*100+this.holdjudge[1]*30+this.holdjudge[2]*55+this.holdjudge[3]*75)
+        this.score=this.point*(this.tapjudge[1]*3+this.tapjudge[2]*6+this.tapjudge[3]*8+this.holdjudge[1]*2+this.holdjudge[2]*4+this.holdjudge[3]*6)
 
         if(this.bonusflag==1){
             this.score+=this.bonus;
@@ -231,13 +229,41 @@ var SCORE= function(tap2,hold2){//holdnotesは123レーンのみで可能
         }
         if(this.tap+this.hold==this.notes_dealt){
             endflag=1;
+            cc.log(this.objectnum);
+            cc.log(this.point);
             
+            cc.log(this.bonus);
             re[0]=this.tapjudge[3]+this.holdjudge[3];
             re[1]=this.tapjudge[2]+this.holdjudge[2];
             re[2]=this.tapjudge[1]+this.holdjudge[1];
             re[3]=this.tapjudge[0]+this.holdjudge[0];
             re[4]=this.maxcombo;
             re[5]=this.score;
+
+            if(this.tapjudge[3]+this.holdjudge[3]==0){
+                re[0]="0"
+                
+            }
+            if(this.tapjudge[2]+this.holdjudge[2]==0){
+                
+                re[1]="0"
+            }
+            if(this.tapjudge[1]+this.holdjudge[1]==0){
+                
+                re[2]="0"
+            }
+            if(this.tapjudge[0]+this.holdjudge[0]==0){
+                re[3]="0"
+                this.bonusflag=1;
+            }
+            if(this.maxcombo==0){
+                re[4]="0"
+                
+            }
+            if(this.score==0){
+                re[5]="0"
+                
+            }
 
 
         }
@@ -379,22 +405,22 @@ var HOLD = function(lanenum,startt,endt,speed){//holdnotesは123レーンのみ�
             }
             else if(this.hitflag==1){
 
-                if(keystate==0&&(lag2<50&&lag2>-50)){
+                if(keystate==0&&(lag2<80&&lag2>-80)){
                     this.hitflag=2;
                     this.judge2=3;
                     return 5;
     
                 }
-                else if(keystate==0&&(lag2<100&&lag2>-100)){
+                else if(keystate==0&&(lag2<130&&lag2>-130)){
                     this.hitflag=2;
                     this.judge2=2;
                     return 6;
                 }
-                else if(keystate==0&&(lag2<150&&lag2>-150)){
+                else if(keystate==0&&(lag2<180&&lag2>-180)){
                     this.hitflag=2;
                     this.judge2=1;return 7;
                 }
-                else if(lag2>=150){
+                else if(lag2>=180){
                     this.hitflag=2;
                     this.judge2=0;return 8;
                 }
@@ -418,9 +444,6 @@ var GAME_NOTES=cc.Layer.extend({
         this._super();
 
         var size = cc.winSize;
-
-        gametime=0;
-
         tapnum=0;
         holdnum=0;
 
@@ -428,8 +451,6 @@ var GAME_NOTES=cc.Layer.extend({
         
         startflag=0;
         this.audioEngine = cc.audioEngine;
-        //cc.audioEngine.preloadMusic(musicpass);
-        //this.scheduleOnce(GAMESTART, 5);
 
         endflag=0;
         this.note_graph=[];
@@ -438,8 +459,11 @@ var GAME_NOTES=cc.Layer.extend({
         this.holdgraph_bar=[];
         
         this.music;
+        this.in=new TAP(1,0,0);
+        this.in.calu(0);
+        this.in.deal(1,0);
 
-        cc.loader.loadJson(res.chart,function(err,data){
+        cc.loader.loadJson(chartpass,function(err,data){
 
           if(!err){
             for(var int =0;int<data.length;int++){
@@ -489,7 +513,6 @@ var GAME_NOTES=cc.Layer.extend({
                 }
 
                 else if(note_sort[e]==2){
-                    cc.log(123123123);
                     this.note_graph.push(new cc.Sprite());
                     this.holdgraph_bar.push(new cc.DrawNode());
                     this.holdgraph_end.push(new cc.Sprite());
@@ -511,9 +534,11 @@ var GAME_NOTES=cc.Layer.extend({
                 }
 
             }
-            this.music= cc.audioEngine.playEffect(res.bgm,false);
-            cc.audioEngine.pauseEffect(this.music);
-        }, 0.12);
+        
+            this.music= cc.audioEngine.playMusic(musicpass,false);
+            cc.audioEngine.pauseMusic();
+
+        }, 0.02);
 
         this.scheduleUpdate();
         
@@ -521,19 +546,28 @@ var GAME_NOTES=cc.Layer.extend({
         return true;
     },
     start:function(){
-        cc.audioEngine.resumeEffect(this.music);
+        cc.audioEngine.setEffectsVolume(0.0);
+        cc.audioEngine.playEffect(res.se1,false);
+        cc.audioEngine.setEffectsVolume(1.0);
 
 
-        startflag=1;
+        
+        this.scheduleOnce(function() {
+            this.music= cc.audioEngine.resumeMusic();
+            gametime=0;
+            startflag=1;
+
+        },1.0)
+        
     },
 
     update: function(dt) {   
-        var flag=0;  
+
 
         if(endflag==1){
             
             this.scheduleOnce(function() {
-                cc.audioEngine.pauseEffect(this.music);
+                cc.audioEngine.pauseMusic();
 
             }, 4);
             this.scheduleOnce(function() {
@@ -544,16 +578,18 @@ var GAME_NOTES=cc.Layer.extend({
         }
 
 
-        if(startflag==1){
+        if(startflag>=1){
             gametime+=dt;
-            scoredata.RE();
-            //はじめから3s→スタート画面→自動で譜面スタート
-            // dt秒ごとにこのメソッドが呼び出される
 
+          
+            scoredata.RE();
+            // dt秒ごとにこのメソッドが呼び出される
+            
 
             if(seplay>0){
                cc.audioEngine.playEffect(res.se1,false);
                 seplay=0;
+
             }
             
             for(var e=0;e<notesnum;e++){
@@ -695,14 +731,13 @@ var GAME_NOTES=cc.Layer.extend({
                                 break;
                         }
                         
-                        this.note_graph[e].setSpriteFrame(this.note_graph2[1]);
+                        this.note_graph[e].init();
                         this.holdgraph_end[e].setSpriteFrame(this.note_graph2[1]);
                         this.holdgraph_bar[e].clear() ;
                         this.holdgraph_bar[e].drawRect(cc.p(note_data[e].x-26, note_data[e].y2), cc.p(note_data[e].x+26, 80), cc.color(200, 200, 200, 180));
                     }
                     else if(note_data[e].hitflag==2){
                         note_data[e].hitflag++;
-                        this.note_graph[e].init();
                         this.holdgraph_bar[e].clear() ;
                         this.holdgraph_end[e].init();
                     }
@@ -733,7 +768,7 @@ var GAME_BASE2 = cc.Layer.extend({
 
 
 
-        this.bg2 = new cc.Sprite(res.musicgraph);//
+        this.bg2 = new cc.Sprite(MUSICDATA[nowselect].g_pass);//
         this.bg2.attr({
             x: size.width / 2,
             y: size.height / 2
@@ -751,7 +786,6 @@ var GAME_BASE = cc.Layer.extend({
         this._super();
         var size = cc.winSize;
 
-        gametime=0;
 
         this.scorest=[new cc.Sprite(),new cc.Sprite(),new cc.Sprite(),new cc.Sprite(),new cc.Sprite(),new cc.Sprite(),new cc.Sprite()];
         for(var t=0;t<7;t++){
@@ -827,7 +861,7 @@ var GAME_BASE = cc.Layer.extend({
     },
 
     update:function(){
-        if(startflag==1){
+        if(startflag>=1){
             var number_s=[0,0,0,0,0,0,0]
             var s=scoredata.score;
             number_s[6]=s%10;
@@ -896,7 +930,7 @@ layer6=new START_L();
         layer2=new GAME_NOTES(); 
         layer2.init();
         var layer3=new D_PAD();
-
+        layer3.init(0);
        this.addChild(layer5);
        this.addChild(layer3);
 

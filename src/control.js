@@ -137,9 +137,11 @@ function INPUT_UPDATE(){
     }
 }
 
+var DIF_PAD=cc.Layer.extend({});
+
 var D_PAD = cc.Layer.extend({
     sprite:null,
-    ctor:function () {
+    init:function (mode) {
         this._super();
         var size = cc.winSize;
 
@@ -345,11 +347,18 @@ var D_PAD = cc.Layer.extend({
                 
         }, this);
 
-        this.b1 = new cc.Sprite(res.b_png);
+        if(mode==0){
+            this.b1 = new cc.Sprite(res.b_png);
+
+        }
+        else {
+            this.b1 = new cc.Sprite(res.easy);
+
+        }
         this.b1.attr({
             x: Calu_X(1,side%2+2),
             y: 110,
-            
+            scale:1.15,
         });
 
         cc.eventManager.addListener({
@@ -374,11 +383,18 @@ var D_PAD = cc.Layer.extend({
 
         this.addChild(this.b1, 7);
 
-        this.b2 = new cc.Sprite(res.b_png);
+        if(mode==0){
+            this.b2 = new cc.Sprite(res.b_png);
+
+        }
+        else {
+            this.b2 = new cc.Sprite(res.basic);
+
+        }
 
         this.b2.attr({
             x: Calu_X(2,side%2+2),
-            y: 110,
+            y: 110,scale:1.15,
             
         });
         
@@ -402,13 +418,19 @@ var D_PAD = cc.Layer.extend({
             }
         }, this.b2);
         this.addChild(this.b2, 7);
+        if(mode==0){
+            this.b3 = new cc.Sprite(res.b_png);
 
-        this.b3 = new cc.Sprite(res.b_png);
+        }
+        else {
+            this.b3 = new cc.Sprite(res.hard);
+
+        }
         
         this.b3.attr({
             x: Calu_X(3,side%2+2),
             y: 110,
-            
+            scale:1.15,
         });
         cc.eventManager.addListener({
             event: cc.EventListener.TOUCH_ONE_BY_ONE,
@@ -444,9 +466,9 @@ var D_PAD = cc.Layer.extend({
 
         this.left = new cc.Sprite(res.dpad1_png);
         this.left.attr({
-            x: Calu_X(10,side%2)-85,
+            x: Calu_X(10,side%2)-92,
             y: 170,
-            scale:1.6,
+            scale:1.8,
         });
         
         this.addChild(this.left, 7);
@@ -472,9 +494,9 @@ var D_PAD = cc.Layer.extend({
 
         this.right = new cc.Sprite(res.dpad1_png);
         this.right.attr({
-            x: Calu_X(10,side%2)+85,
+            x: Calu_X(10,side%2)+92,
             y: 170,
-            scale:1.6,
+            scale:1.8,
             rotation: 180
         });
         cc.eventManager.addListener({
@@ -501,10 +523,12 @@ var D_PAD = cc.Layer.extend({
         this.up = new cc.Sprite(res.dpad1_png);
         this.up.attr({
             x: Calu_X(10,side%2),
-            y: 255,
-            scale:1.6,
+            y: 262,
+            scale:1.8,
             rotation: 90
+
         });
+        
         cc.eventManager.addListener({
             event: cc.EventListener.TOUCH_ONE_BY_ONE,
             onTouchBegan: function(touch, event){
@@ -529,8 +553,8 @@ var D_PAD = cc.Layer.extend({
         this.down = new cc.Sprite(res.dpad1_png);
         this.down.attr({
             x: Calu_X(10,side%2),
-            y: 85,
-            scale:1.6,
+            y: 78,
+            scale:1.8,
             rotation: 270
         });
         cc.eventManager.addListener({
@@ -554,6 +578,12 @@ var D_PAD = cc.Layer.extend({
         }, this.down);
         this.addChild(this.down, 7);
 
+        if(mode==1){
+            this.up.setOpacity(160);
+            this.down.setOpacity(160);
+            this.left.setOpacity(160);
+            this.right.setOpacity(160);
+        }
         cc.eventManager.addListener({
             event: cc.EventListener.KEYBOARD,
 

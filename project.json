@@ -16,6 +16,7 @@
         "src/app.js",
         "src/game.js",
         "src/control.js",
-        "src/effect.js" 
+        "src/effect.js" ,
+        "src/menu.js"
     ]
 }

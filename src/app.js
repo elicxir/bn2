@@ -2,7 +2,7 @@ function GO_NEXT(name){
     //var s = cc.TransitionFade.create(2, new name());
     
     //cc.director.runScene(s);
-    cc.LoaderScene.preload(g_resources, function () {
+    cc.LoaderScene.preload(m_resources, function () {
         cc.director.runScene(new name());
     }, this);
 }
@@ -16,7 +16,7 @@ var TITLE_L = cc.Layer.extend({
         this._super();
         var size = cc.winSize;
     
-        var Label = new cc.LabelTTF("ver0.1.0", "Arial", 42);       
+        var Label = new cc.LabelTTF("ver0.3.2", "Arial", 42);       
         Label.x = size.width / 2+190;
         Label.y = 70;
         Label.setColor( cc.color(0, 0, 0, 20))
@@ -42,7 +42,7 @@ var TITLE_L = cc.Layer.extend({
                  
                 if (keyCode == cc.KEY.enter) {
                     
-                    GO_NEXT(GAME_S);
+                    cc.director.runScene(new MENU_S());
                    
                 }
 
@@ -56,7 +56,8 @@ var TITLE_L = cc.Layer.extend({
             //タッチ開始時の処理
             onTouchBegan: function(touch, event){
                 
-                GO_NEXT(GAME_S);
+                cc.director.runScene(new MENU_S());
+
               
                 //これがないと落ちる
                 return true;
@@ -100,6 +101,20 @@ var RESULT_L = cc.Layer.extend({
     },
 
     init:function(){
+
+        this.sprite1 = new cc.Sprite(graphpass);
+        this.sprite1.attr({
+            x: 250,
+            y: 260,
+            scale:0.7
+        });
+        this.addChild(this.sprite1, 3);
+
+        this.Label1 = new cc.LabelTTF(MUSICDATA[nowselect].title, "Arial", 50);       
+        this.Label1.x = 960*0.25;
+        this.Label1.y = 90;
+        this.Label1.setColor( cc.color(255, 255, 255, 20))
+        this.addChild(this.Label1, 9);
 
         var Label = new cc.LabelTTF(re[0], "Arial", 37);       
              Label.x = 810;
@@ -148,3 +163,4 @@ var RESULT_S = cc.Scene.extend({
         this.addChild(layer);
     }
 });
+
