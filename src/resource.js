@@ -29,6 +29,7 @@ var res2 = {
     flame:"res/waku.png",
     data : "res/MUSIC.json",
     c : "res/1.png",
+    se1:"res/hit.wav",
     waku2:"res/waku2.png"
 };
 

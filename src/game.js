@@ -6,8 +6,6 @@ var endflag;
 var offset=0;//スタート時間のずれ
 var c_lag=0;//判定のずれ
 
-var loadf=0;
-
 
 var note_sort=[];
 var note_data=[];
@@ -29,10 +27,8 @@ var START_L=cc.Layer.extend({
 
     REMOVE:function(){
         
-            this.scheduleOnce(function() {
-                layer2.start();
-
-            },0.5)
+            
+            layer2.start();
              
             this.removeChild(this.rect, true);
             this.removeChild(this.sprite2, true);
@@ -78,7 +74,7 @@ var START_L=cc.Layer.extend({
             onKeyPressed: function(keyCode, event) {
                  
                 if (keyCode == cc.KEY.enter) {
-                    if(flag==0&&loadf==1){
+                    if(flag==0){
                         layer6.REMOVE();
                         flag++;
                     }
@@ -93,7 +89,7 @@ var START_L=cc.Layer.extend({
             event: cc.EventListener.TOUCH_ONE_BY_ONE,
             //タッチ開始時の処理
             onTouchBegan: function(touch, event){
-                if(flag==0&&loadf==1){
+                if(flag==0){
                     layer6.REMOVE();
                     flag++;
                 }
@@ -457,8 +453,8 @@ var GAME_NOTES=cc.Layer.extend({
         notesnum=0;
         
         startflag=0;
-        this.audioEngine = cc.audioEngine;
 
+        this.audioEngine = cc.audioEngine;
         endflag=0;
         this.note_graph=[];
         this.holdgraph_end=[];
@@ -470,6 +466,7 @@ var GAME_NOTES=cc.Layer.extend({
         this.in=new TAP(1,0,0);
         this.in.calu(0);
         this.in.deal(1,0);
+
 
         cc.loader.loadJson(chartpass,function(err,data){
 
@@ -544,7 +541,6 @@ var GAME_NOTES=cc.Layer.extend({
             }
             
 
-            this.music= cc.audioEngine.playMusic(musicpass,false);
             
         }, 0.4);
 
@@ -554,18 +550,13 @@ var GAME_NOTES=cc.Layer.extend({
         return true;
     },
     start:function(){
-        cc.audioEngine.playEffect(res.se1,false);
-
-        
-        
-        this.scheduleOnce(function() {
-            
-            cc.audioEngine.resumeMusic() 
+        this.audioEngine.playEffect(res2.se1,false);
+        getAudioBuffer(MUSICDATA[nowselect].m_pass, function(buffer) {
             gametime=0;
             startflag=1;
-
-        },0.4)
-        
+            playSound(buffer);
+      
+      });
     },
 
     update: function(dt) {   
@@ -574,7 +565,6 @@ var GAME_NOTES=cc.Layer.extend({
         if(endflag==1){
             
             this.scheduleOnce(function() {
-                cc.audioEngine.pauseMusic();
 
             }, 4);
             this.scheduleOnce(function() {
@@ -594,7 +584,7 @@ var GAME_NOTES=cc.Layer.extend({
             
 
             if(seplay>0){
-               cc.audioEngine.playEffect(res.se1,false);
+               this.audioEngine.playEffect(res2.se1,false);
                 seplay=0;
 
             }
@@ -756,20 +746,8 @@ var GAME_NOTES=cc.Layer.extend({
                 
             }
         } 
-        else {
-            if (cc.audioEngine.isMusicPlaying()) {
-                cc.audioEngine.pauseMusic() ;
-                if(loadf==0){
-                    cc.audioEngine.playEffect(res.se1,false);
-                    loadf=1;
-                }
-                
-
-            }
-           
-
-
-        }
+    
+            
             
     }
 });
