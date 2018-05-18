@@ -1,5 +1,5 @@
 [
-{ "title" :"AXION" ,"title2" :"AXION" ,"music" :"sozai/AXION.mp3" ,"graph" :"sozai/axion.png" ,"chart1" :"sozai/AXION_E.json" ,"chart2" :0 ,"chart3" :"sozai/AXION_H.json" ,"dif1" :8 ,"dif2" :0 ,"dif3" :25 },
+{ "title" :"AXION" ,"title2" :"AXION" ,"music" :"sozai/AXION.mp3" ,"graph" :"sozai/axion.png" ,"chart1" :"sozai/AXION_E.json" ,"chart2" :"sozai/AXION_N.json" ,"chart3" :"sozai/AXION_H.json" ,"dif1" :8 ,"dif2" :15 ,"dif3" :25 },
 { "title" :"3y3s" ,"title2" :"3y3s" ,"music" :"sozai/3y3s.mp3" ,"graph" :"sozai/3y3s.png" ,"chart1" :0 ,"chart2" :"sozai/3y3s_N.json","chart3" :"sozai/3y3s_H.json" ,"dif1" :0 ,"dif2" :17 ,"dif3" :0 }
 
 ]

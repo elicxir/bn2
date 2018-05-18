@@ -16,7 +16,7 @@ var TITLE_L = cc.Layer.extend({
         this._super();
         var size = cc.winSize;
     
-        var Label = new cc.LabelTTF("テスト中", "Arial", 42);       
+        var Label = new cc.LabelTTF("ver0.3.5", "Arial", 42);       
         Label.x = size.width / 2+190;
         Label.y = 70;
         Label.setColor( cc.color(0, 0, 0, 20))
@@ -97,6 +97,37 @@ var RESULT_L = cc.Layer.extend({
         });
         this.addChild(this.sprite, 0);
 
+        cc.eventManager.addListener({
+            event: cc.EventListener.KEYBOARD,
+            onKeyPressed: function(keyCode, event) {
+                 
+                if (keyCode == cc.KEY.enter) {
+                    
+                    cc.director.runScene(new MENU_S());
+                   
+                }
+
+                
+            },
+                
+        }, this);
+
+        cc.eventManager.addListener({
+            event: cc.EventListener.TOUCH_ONE_BY_ONE,
+            //タッチ開始時の処理
+            onTouchBegan: function(touch, event){
+                
+                cc.director.runScene(new MENU_S());
+
+              
+                //これがないと落ちる
+                return true;
+            }
+            //タッチ移動時の処理
+           
+           
+        }, this);
+        
         return true;
     },
 

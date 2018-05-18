@@ -33,17 +33,6 @@ var res2 = {
     waku2:"res/waku2.png"
 };
 
-var musicpass="";
-var graphpass="";//画像　正方形;
-var titlename="";
-var chartpass="";
-
-var mres={
-    graph:graphpass,
-    chart:chartpass,
-    music:musicpass
-
-};
 var res = {
     
     back_png : "res/title2.png",
@@ -86,8 +75,4 @@ for (var i in res) {
 var g2_resources = [];
 for (var i in res2) {
     g2_resources.push(res2[i]);
-}
-var m_resources = [];
-for (var i in mres) {
-    m_resources.push(mres[i]);
 }

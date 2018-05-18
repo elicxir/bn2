@@ -456,17 +456,14 @@ var GAME_NOTES=cc.Layer.extend({
 
         this.audioEngine = cc.audioEngine;
         endflag=0;
+        this.endtime=0;
         this.note_graph=[];
         this.holdgraph_end=[];
         this.note_graph2=[];
         this.holdgraph_bar=[];
         
-        this.music;
-        this.music1;
-        this.in=new TAP(1,0,0);
-        this.in.calu(0);
-        this.in.deal(1,0);
-
+        this.music=new Audio();
+        this.music.src = MUSICDATA[nowselect].m_pass;
 
         cc.loader.loadJson(chartpass,function(err,data){
 
@@ -481,6 +478,13 @@ var GAME_NOTES=cc.Layer.extend({
                 else if(data[int].sort==2){
                     note_data.push(new HOLD(data[int].lane,data[int].time,data[int].time2,data[int].speed));
                     holdnum++;
+                }
+
+                if(data[int].time>this.endtime){
+                    this.endtime=data[int].time;
+                }
+                if(data[int].time2>this.endtime){
+                    this.endtime=data[int].time2;
                 }
             }   
             scoredata=new SCORE(tapnum,holdnum);
@@ -551,32 +555,40 @@ var GAME_NOTES=cc.Layer.extend({
     },
     start:function(){
         this.audioEngine.playEffect(res2.se1,false);
-        getAudioBuffer(MUSICDATA[nowselect].m_pass, function(buffer) {
+        this.scheduleOnce(function() {
             gametime=0;
             startflag=1;
-            playSound(buffer);
-      
-      });
+    
+            this.music.play();
+        }, 1.8);
+
     },
 
     update: function(dt) {   
 
 
         if(endflag==1){
-            
             this.scheduleOnce(function() {
-
-            }, 4);
+                this.music.pause();
+            }, 1.8);
+           
             this.scheduleOnce(function() {
                 var s = cc.TransitionFade.create(2, new RESULT_S());
                 cc.director.runScene(s);
-            }, 4);
+
+               
+                    note_sort.splice(0,note_sort.length)
+                    note_data.splice(0,note_data.length)
+            }, 3);
     
         }
 
 
         if(startflag>=1){
             gametime+=dt;
+            if(gametime-this.music.currentTime>50||gametime-this.music.currentTime<-50){
+                gametime=this.music.currentTime;
+            }
 
           
             scoredata.RE();

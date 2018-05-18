@@ -1,40 +1,3 @@
-window.AudioContext = window.AudioContext || window.webkitAudioContext;  
-var context = new AudioContext();  
-
-// Audio 用の buffer を読み込む
-var getAudioBuffer = function(url, fn) {  
-    var req = new XMLHttpRequest();
-    // array buffer を指定
-    req.responseType = 'arraybuffer';
-  
-    req.onreadystatechange = function() {
-      if (req.readyState === 4) {
-        if (req.status === 0 || req.status === 200) {
-          // array buffer を audio buffer に変換
-          context.decodeAudioData(req.response, function(buffer) {
-            // コールバックを実行
-            fn(buffer);
-          });
-        }
-      }
-    };
-  
-    req.open('GET', url, true);
-    req.send('');
-  };
-  
-  // サウンドを再生
-  var playSound = function(buffer) {  
-    // source を作成
-    var source = context.createBufferSource();
-    // buffer をセット
-    source.buffer = buffer;
-    // context に connect
-    source.connect(context.destination);
-    // 再生
-    source.start(0);
-  };
-  
 
 
 cc.game.onStart = function(){
@@ -66,6 +29,23 @@ cc.game.onStart = function(){
 
     //load resources
     cc.LoaderScene.preload(g2_resources, function () {
+
+      cc.loader.loadJson(res2.data,function(err,data){
+        musicnum=0;
+        if(!err){
+          for(var int =0;int<data.length;int++){
+              MUSICDATA.push(new M_DATA(data[int].title,data[int].title2,data[int].music,data[int].graph,data[int].chart1,data[int].chart2,data[int].chart3,data[int].dif1,data[int].dif2,data[int].dif3));
+              
+              musicnum++;
+              
+          }  
+          
+
+        }
+        this.nowselect1=musicnum*10+nowselect;
+      });
+
+
         cc.director.runScene(new TITLE_S());
     }, this);
 };

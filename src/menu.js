@@ -89,27 +89,14 @@ var MENU_L = cc.Layer.extend({
     init:function () {
         this._super();
 
-        musicnum=0;
+
         this.nowselect1=0;
         this.nowdif1=3001;
 
         flag1=0;
 
         var size = cc.winSize;
-        cc.loader.loadJson(res2.data,function(err,data){
-
-          if(!err){
-            for(var int =0;int<data.length;int++){
-                MUSICDATA.push(new M_DATA(data[int].title,data[int].title2,data[int].music,data[int].graph,data[int].chart1,data[int].chart2,data[int].chart3,data[int].dif1,data[int].dif2,data[int].dif3));
-                
-                musicnum++;
-                
-            }  
-            
-
-          }
-          this.nowselect1=musicnum*10+nowselect;
-        });
+        
 
         
 
