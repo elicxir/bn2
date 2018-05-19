@@ -14,6 +14,8 @@ var note_data=[];
 
 var seplay=0;
 
+var flag=0;
+
 
 var scoreLabel;
 var startflag;
@@ -26,9 +28,7 @@ var START_L=cc.Layer.extend({
     sprite:null,
 
     REMOVE:function(){
-        
-            
-            layer2.start();
+        flag++;
              
             this.removeChild(this.rect, true);
             this.removeChild(this.sprite2, true);
@@ -40,7 +40,6 @@ var START_L=cc.Layer.extend({
     ctor:function () {
         this._super();
         var size = cc.winSize;
-        var flag=0;
 
         loadf=0;
 
@@ -76,7 +75,6 @@ var START_L=cc.Layer.extend({
                 if (keyCode == cc.KEY.enter) {
                     if(flag==0){
                         layer6.REMOVE();
-                        flag++;
                     }
                 }
 
@@ -90,8 +88,7 @@ var START_L=cc.Layer.extend({
             //タッチ開始時の処理
             onTouchBegan: function(touch, event){
                 if(flag==0){
-                    layer6.REMOVE();
-                    flag++;
+                    layer6.REMOVE();               
                 }
                 return true;
             }
@@ -448,6 +445,7 @@ var GAME_NOTES=cc.Layer.extend({
 
         var size = cc.winSize;
         tapnum=0;
+        flag=0;
         holdnum=0;
 
         notesnum=0;
@@ -456,14 +454,14 @@ var GAME_NOTES=cc.Layer.extend({
 
         this.audioEngine = cc.audioEngine;
         endflag=0;
-        this.endtime=0;
         this.note_graph=[];
         this.holdgraph_end=[];
         this.note_graph2=[];
         this.holdgraph_bar=[];
         
-        this.music=new Audio();
-        this.music.src = MUSICDATA[nowselect].m_pass;
+        var music=new Audio();
+        music.src = MUSICDATA[nowselect].m_pass;
+
 
         cc.loader.loadJson(chartpass,function(err,data){
 
@@ -478,13 +476,6 @@ var GAME_NOTES=cc.Layer.extend({
                 else if(data[int].sort==2){
                     note_data.push(new HOLD(data[int].lane,data[int].time,data[int].time2,data[int].speed));
                     holdnum++;
-                }
-
-                if(data[int].time>this.endtime){
-                    this.endtime=data[int].time;
-                }
-                if(data[int].time2>this.endtime){
-                    this.endtime=data[int].time2;
                 }
             }   
             scoredata=new SCORE(tapnum,holdnum);
@@ -546,22 +537,45 @@ var GAME_NOTES=cc.Layer.extend({
             
 
             
-        }, 0.4);
+        }, 0.2);
+
+
+
+        cc.eventManager.addListener({
+            event: cc.EventListener.KEYBOARD,
+            onKeyPressed: function(keyCode, event) {
+                if(flag>0){
+                    music.play();
+                    gametime=0;
+                    startflag=1;
+            
+                    flag=-5;
+                                   
+            }
+            },
+                
+        }, this);
+
+        cc.eventManager.addListener({
+            event: cc.EventListener.TOUCH_ONE_BY_ONE,
+            //タッチ開始時の処理
+            onTouchBegan: function(touch, event){
+                if(flag>0){
+                    music.play();
+                    gametime=0;
+                    startflag=1;
+            
+                    flag=-5;
+                                   
+            }
+                return true;
+            }          
+        }, this);
 
         this.scheduleUpdate();
 
 
         return true;
-    },
-    start:function(){
-        this.audioEngine.playEffect(res2.se1,false);
-        this.scheduleOnce(function() {
-            gametime=0;
-            startflag=1;
-    
-            this.music.play();
-        }, 1.8);
-
     },
 
     update: function(dt) {   
@@ -569,8 +583,8 @@ var GAME_NOTES=cc.Layer.extend({
 
         if(endflag==1){
             this.scheduleOnce(function() {
-                this.music.pause();
-            }, 1.8);
+                music.pause();
+            }, 2);
            
             this.scheduleOnce(function() {
                 var s = cc.TransitionFade.create(2, new RESULT_S());
@@ -586,9 +600,6 @@ var GAME_NOTES=cc.Layer.extend({
 
         if(startflag>=1){
             gametime+=dt;
-            if(gametime-this.music.currentTime>50||gametime-this.music.currentTime<-50){
-                gametime=this.music.currentTime;
-            }
 
           
             scoredata.RE();
