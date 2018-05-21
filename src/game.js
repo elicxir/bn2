@@ -10,6 +10,7 @@ var c_lag=0;//判定のずれ
 var note_sort=[];
 var note_data=[];
 
+var music;
 
 
 var seplay=0;
@@ -459,7 +460,7 @@ var GAME_NOTES=cc.Layer.extend({
         this.note_graph2=[];
         this.holdgraph_bar=[];
         
-        var music=new Audio();
+        music=new Audio();
         music.src = MUSICDATA[nowselect].m_pass;
 
 
@@ -600,6 +601,12 @@ var GAME_NOTES=cc.Layer.extend({
 
         if(startflag>=1){
             gametime+=dt;
+            if(gametime>0.1&&endflag==0){
+                gametime=music.currentTime
+            }
+                
+
+            
 
           
             scoredata.RE();
