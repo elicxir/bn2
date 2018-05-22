@@ -13,8 +13,6 @@ var note_data=[];
 var music;
 
 
-var seplay=0;
-
 var flag=0;
 
 
@@ -76,6 +74,7 @@ var START_L=cc.Layer.extend({
                 if (keyCode == cc.KEY.enter) {
                     if(flag==0){
                         layer6.REMOVE();
+                        flag++;
                     }
                 }
 
@@ -89,7 +88,7 @@ var START_L=cc.Layer.extend({
             //タッチ開始時の処理
             onTouchBegan: function(touch, event){
                 if(flag==0){
-                    layer6.REMOVE();               
+                    layer6.REMOVE();   flag++;            
                 }
                 return true;
             }
@@ -280,7 +279,6 @@ var TAP = function(lanenum,timems,speed){//lane 123 左側　4↑ 5↓ 6→ 7←
 
         this.speed=speed;
         this.hitflag=0;//0未処理　1見逃しmiss 2処理された
-        this.seflag=0;
         this.judge=-1;//0miss 1good 2great 3perfect
 
         this.x;
@@ -347,7 +345,6 @@ var HOLD = function(lanenum,startt,endt,speed){//holdnotesは123レーンのみ�
     this.x;
     this.y1;
     this.y2;
-    this.seflag=0;
 
     this.lane=lanenum;
     this.time=startt+offset;
@@ -613,27 +610,19 @@ var GAME_NOTES=cc.Layer.extend({
             // dt秒ごとにこのメソッドが呼び出される
             
 
-            if(seplay>0){
+            /*if(seplay>0){
                this.audioEngine.playEffect(res2.se1,false);
                 seplay=0;
 
             }
-            
+            */
             for(var e=0;e<notesnum;e++){
 
                 if(note_sort[e]==1){
 
-                    if(note_data[e].seflag==0){
-                        
-                            if((gametime*1000)-(note_data[e].time)+34>0){
-                                seplay++;
-                                note_data[e].seflag++;
-                            }
-                    }
-
                     if(note_data[e].hitflag<2){
-                        flag=note_data[e].deal(INPUT(note_data[e].lane,0),gametime*1000);
-                        switch(flag){
+                        flag3=note_data[e].deal(INPUT(note_data[e].lane,0),gametime*1000);
+                        switch(flag3){
                             case 1:
                                 layer1.add(0,note_data[e].lane);this.note_graph[e].init();
                                 scoredata.add(1,3);
@@ -682,22 +671,6 @@ var GAME_NOTES=cc.Layer.extend({
                 }
 
                 else if(note_sort[e]==2){
-
-                    if(note_data[e].seflag==0){
-                        
-                        if((gametime*1000)-(note_data[e].time)+34>0){
-                            seplay++;
-                            note_data[e].seflag++;
-                        }
-                    }
-                    else if(note_data[e].seflag==1){
-                        
-                     if((gametime*1000)-(note_data[e].time2)+34>0){
-                        seplay++;
-                        note_data[e].seflag++;
-                        }
-                    }
-
                     note_data[e].calu(gametime*1000);
                  
                     this.note_graph[e].attr({
@@ -712,8 +685,8 @@ var GAME_NOTES=cc.Layer.extend({
 
                     if(note_data[e].hitflag==0){
 
-                        flag=note_data[e].deal(INPUT(note_data[e].lane,0),gametime*1000);
-                        switch(flag){
+                        flag3=note_data[e].deal(INPUT(note_data[e].lane,0),gametime*1000);
+                        switch(flag3){
                             case 1:
                                 layer1.add(0,note_data[e].lane);this.note_graph[e].init();
                                 scoredata.add(2,3);
@@ -741,8 +714,8 @@ var GAME_NOTES=cc.Layer.extend({
 
                     }
                     else if(note_data[e].hitflag==1){
-                        flag=note_data[e].deal(INPUT(note_data[e].lane,0),gametime*1000);
-                        switch(flag){
+                        flag3=note_data[e].deal(INPUT(note_data[e].lane,0),gametime*1000);
+                        switch(flag3){
                             case 5:
                                 layer1.add(0,note_data[e].lane);this.note_graph[e].init();
                                 scoredata.add(3,3);
