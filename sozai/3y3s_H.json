@@ -1,5 +1,5 @@
 [
-    { "sort" :1 ,"lane" :1 ,"time" :5400 ,"time2" :0 ,"speed" :60 },
+{ "sort" :1 ,"lane" :1 ,"time" :5400 ,"time2" :0 ,"speed" :60 },
 { "sort" :1, "lane" :4, "time" :5400, "time2" :0, "speed" :60 },
 { "sort" :1, "lane" :3, "time" :5557, "time2" :0, "speed" :60 },
 { "sort" :1, "lane" :4, "time" :5557, "time2" :0, "speed" :60 },
@@ -464,11 +464,12 @@
 { "sort" :1, "lane" :2, "time" :50557, "time2" :0, "speed" :70 },
 { "sort" :1 ,"lane" :1 ,"time" :50635 ,"time2" :0 ,"speed" :70 },
 { "sort" :1, "lane" :2, "time" :50714, "time2" :0, "speed" :70 },
+{ "sort" :1, "lane" :7, "time" :50792, "time2" :0, "speed" :70 },
 { "sort" :1 ,"lane" :1 ,"time" :50792 ,"time2" :0 ,"speed" :70 },
 { "sort" :1, "lane" :2, "time" :50871, "time2" :0, "speed" :70 },
-{ "sort" :1, "lane" :7, "time" :50949, "time2" :0, "speed" :70 },
 { "sort" :1 ,"lane" :1 ,"time" :50949 ,"time2" :0 ,"speed" :70 },
 { "sort" :1, "lane" :2, "time" :51028, "time2" :0, "speed" :70 },
+{ "sort" :1, "lane" :7, "time" :51106, "time2" :0, "speed" :70 },
 { "sort" :1 ,"lane" :1 ,"time" :51106 ,"time2" :0 ,"speed" :70 },
 { "sort" :1, "lane" :2, "time" :51185, "time2" :0, "speed" :70 },
 { "sort" :1, "lane" :6, "time" :51263, "time2" :0, "speed" :70 },
@@ -480,7 +481,6 @@
 { "sort" :1, "lane" :6, "time" :51577, "time2" :0, "speed" :70 },
 { "sort" :1 ,"lane" :1 ,"time" :51577 ,"time2" :0 ,"speed" :70 },
 { "sort" :1, "lane" :2, "time" :51656, "time2" :0, "speed" :70 },
-{ "sort" :1, "lane" :7, "time" :51735, "time2" :0, "speed" :70 },
 { "sort" :1 ,"lane" :1 ,"time" :51735 ,"time2" :0 ,"speed" :70 },
 { "sort" :1, "lane" :2, "time" :51813, "time2" :0, "speed" :70 },
 { "sort" :1 ,"lane" :1 ,"time" :51892 ,"time2" :0 ,"speed" :70 },
@@ -1143,5 +1143,4 @@
 { "sort" :1, "lane" :2, "time" :119431, "time2" :0, "speed" :55 },
 { "sort" :1 ,"lane" :1 ,"time" :119509 ,"time2" :0 ,"speed" :55 },
 { "sort" :1, "lane" :4, "time" :119588, "time2" :0, "speed" :55 },
-{ "sort" :1, "lane" :3, "time" :119588, "time2" :0, "speed" :55 }
-]
+{ "sort" :1, "lane" :3, "time" :119588, "time2" :0, "speed" :55 }]
