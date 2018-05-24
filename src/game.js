@@ -13,8 +13,9 @@ var note_data=[];
 var music;
 
 
-var flag=0;
+var flag=-1;
 
+var sef=0;
 
 var scoreLabel;
 var startflag;
@@ -103,7 +104,7 @@ var START_L=cc.Layer.extend({
 
 
 function Calu_Y(just,nowtime,speed) {
-    var y=80+5+(just-nowtime)*speed*0.01;
+    var y=80+(just-nowtime)*speed*0.01;
     return y;
 }
 
@@ -229,10 +230,7 @@ var SCORE= function(tap2,hold2){//holdnotesは123レーンのみで可能
         }
         if(this.tap+this.hold==this.notes_dealt){
             endflag=1;
-            cc.log(this.objectnum);
-            cc.log(this.point);
-            
-            cc.log(this.bonus);
+           
             re[0]=this.tapjudge[3]+this.holdjudge[3];
             re[1]=this.tapjudge[2]+this.holdjudge[2];
             re[2]=this.tapjudge[1]+this.holdjudge[1];
@@ -299,7 +297,7 @@ var TAP = function(lanenum,timems,speed){//lane 123 左側　4↑ 5↓ 6→ 7←
         }
 
         this.deal=function(keystate,time1000){
-            var lag=(time1000)-(this.time)-34-c_lag;
+            var lag=(time1000)-(this.time)+c_lag-17;
 
            
 
@@ -310,6 +308,7 @@ var TAP = function(lanenum,timems,speed){//lane 123 左側　4↑ 5↓ 6→ 7←
                     this.hitflag=2;
                     this.judge=3;
                     INPUT(this.lane,1);
+                    cc.log(lag);
                     return 1;
     
                 }
@@ -317,6 +316,8 @@ var TAP = function(lanenum,timems,speed){//lane 123 左側　4↑ 5↓ 6→ 7←
                     this.hitflag=2;
                     this.judge=2;
                     INPUT(this.lane,1);
+                    cc.log(lag);
+
                     return 2;
                 }
                 else if(keystate==1&&(lag<150&&lag>-150)){
@@ -375,8 +376,8 @@ var HOLD = function(lanenum,startt,endt,speed){//holdnotesは123レーンのみ�
     }
 
         this.deal=function(keystate,time1000){
-            var lag=(time1000)-(this.time)-34-c_lag;
-            var lag2=(time1000)-(this.time2)-34-c_lag;
+            var lag=(time1000)-(this.time)+c_lag-17;
+            var lag2=(time1000)-(this.time2)+c_lag-17;
 
             if(this.hitflag==0){
 
@@ -443,7 +444,7 @@ var GAME_NOTES=cc.Layer.extend({
 
         var size = cc.winSize;
         tapnum=0;
-        flag=0;
+        flag=-1;
         holdnum=0;
 
         notesnum=0;
@@ -478,7 +479,10 @@ var GAME_NOTES=cc.Layer.extend({
             }   
             scoredata=new SCORE(tapnum,holdnum);
             notesnum=tapnum+holdnum;
+            //flag=0;
           }
+
+          
     
         });
 
@@ -504,7 +508,7 @@ var GAME_NOTES=cc.Layer.extend({
 
                     this.note_graph[e].attr({
                         x: Calu_X(note_data[e].lane,side),
-                        y: Calu_Y(note_data[e].time,gametime*1000,note_data[e].speed)
+                        y: Calu_Y(note_data[e].time,gametime*1000.0000,note_data[e].speed)
                     });
                    
                     this.addChild(this.note_graph[e], notesnum-e);
@@ -517,12 +521,12 @@ var GAME_NOTES=cc.Layer.extend({
 
                     this.note_graph[e].attr({
                         x: Calu_X(note_data[e].lane,side),
-                        y: Calu_Y(note_data[e].time,gametime*1000,note_data[e].speed)
+                        y: Calu_Y(note_data[e].time,gametime*1000.0000,note_data[e].speed)
                     });
 
                     this.holdgraph_end[e].attr({
                         x: Calu_X(note_data[e].lane,side),
-                        y: Calu_Y(note_data[e].time2,gametime*1000,note_data[e].speed)
+                        y: Calu_Y(note_data[e].time2,gametime*1000.0000,note_data[e].speed)
                     });        
 
                     this.addChild(this.holdgraph_bar[e], notesnum-e-2);
@@ -534,8 +538,8 @@ var GAME_NOTES=cc.Layer.extend({
             }
             
 
-            
-        }, 0.2);
+            flag=0;
+        }, 0.4);
 
 
 
@@ -570,6 +574,9 @@ var GAME_NOTES=cc.Layer.extend({
             }          
         }, this);
 
+
+
+
         this.scheduleUpdate();
 
 
@@ -577,7 +584,13 @@ var GAME_NOTES=cc.Layer.extend({
     },
 
     update: function(dt) {   
+        
 
+       // if(sef>0){
+        //    sef=0;
+        //    this.audioEngine.playEffect(res2.se1, false);
+//
+        //}
 
         if(endflag==1){
             this.scheduleOnce(function() {
@@ -601,27 +614,19 @@ var GAME_NOTES=cc.Layer.extend({
             if(gametime>0.1&&endflag==0){
                 gametime=music.currentTime
             }
-                
-
-            
-
-          
             scoredata.RE();
-            // dt秒ごとにこのメソッドが呼び出される
-            
 
-            /*if(seplay>0){
-               this.audioEngine.playEffect(res2.se1,false);
-                seplay=0;
-
-            }
-            */
             for(var e=0;e<notesnum;e++){
 
                 if(note_sort[e]==1){
 
+                    //if(gametime*1000.0000>note_data[e].time-17&&note_data[e].hitflag==0){
+                    //    note_data[e].hitflag--;
+                    //    sef++;
+                    //}
+
                     if(note_data[e].hitflag<2){
-                        flag3=note_data[e].deal(INPUT(note_data[e].lane,0),gametime*1000);
+                        flag3=note_data[e].deal(INPUT(note_data[e].lane,0),gametime*1000.0000);
                         switch(flag3){
                             case 1:
                                 layer1.add(0,note_data[e].lane);this.note_graph[e].init();
@@ -638,7 +643,7 @@ var GAME_NOTES=cc.Layer.extend({
                                 break;
                         }
 
-                        note_data[e].calu(gametime*1000);
+                        note_data[e].calu(gametime*1000.0000);
     
                         
                         this.note_graph[e].attr({
@@ -671,7 +676,7 @@ var GAME_NOTES=cc.Layer.extend({
                 }
 
                 else if(note_sort[e]==2){
-                    note_data[e].calu(gametime*1000);
+                    note_data[e].calu(gametime*1000.0000);
                  
                     this.note_graph[e].attr({
                             x: note_data[e].x,
@@ -685,7 +690,7 @@ var GAME_NOTES=cc.Layer.extend({
 
                     if(note_data[e].hitflag==0){
 
-                        flag3=note_data[e].deal(INPUT(note_data[e].lane,0),gametime*1000);
+                        flag3=note_data[e].deal(INPUT(note_data[e].lane,0),gametime*1000.0000);
                         switch(flag3){
                             case 1:
                                 layer1.add(0,note_data[e].lane);this.note_graph[e].init();
@@ -714,7 +719,7 @@ var GAME_NOTES=cc.Layer.extend({
 
                     }
                     else if(note_data[e].hitflag==1){
-                        flag3=note_data[e].deal(INPUT(note_data[e].lane,0),gametime*1000);
+                        flag3=note_data[e].deal(INPUT(note_data[e].lane,0),gametime*1000.0000);
                         switch(flag3){
                             case 5:
                                 layer1.add(0,note_data[e].lane);this.note_graph[e].init();

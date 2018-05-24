@@ -27,7 +27,7 @@ var res2 = {
     title_png : "res/title.png",
     back_png : "res/title2.png",
     flame:"res/waku.png",
-    data : "res/MUSIC.json",
+    data : "sozai/MUSIC.json",
     c : "res/1.png",
     se1:"res/hit.wav",
     waku2:"res/waku2.png"
