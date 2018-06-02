@@ -5,6 +5,7 @@ var endflag;
 
 var offset=0;//スタート時間のずれ
 var c_lag=0;//判定のずれ
+var speedmult=1.00;
 
 
 var note_sort=[];
@@ -104,7 +105,7 @@ var START_L=cc.Layer.extend({
 
 
 function Calu_Y(just,nowtime,speed) {
-    var y=80+(just-nowtime)*speed*0.01;
+    var y=80+(just-nowtime)*speed*0.01*speedmult;
     return y;
 }
 
@@ -169,8 +170,8 @@ var SCORE= function(tap2,hold2){//holdnotesは123レーンのみで可能
 
     this.point=(1000000-this.bonus)/this.objectnum;
 
-    this.tapjudge=[0,0,0,0];//3perfect 2great 1good 0miss 100 70 40 0
-    this.holdjudge=[0,0,0,0];//3perfect 2great 1good 0miss 150 115 60 0 
+    this.tapjudge=[0,0,0,0];//3perfect 2great 1good 0miss 100 70 20 0
+    this.holdjudge=[0,0,0,0];//3perfect 2great 1good 0miss 150 115 30 0 
 
     this.bonusflag=0;
     this.score=0;
@@ -220,7 +221,7 @@ var SCORE= function(tap2,hold2){//holdnotesは123レーンのみで可能
 
     }
     this.RE=function(){
-        this.score=this.point*(this.tapjudge[1]*3+this.tapjudge[2]*6+this.tapjudge[3]*8+this.holdjudge[1]*2+this.holdjudge[2]*4+this.holdjudge[3]*6)
+        this.score=this.point*(this.tapjudge[1]*1+this.tapjudge[2]*6+this.tapjudge[3]*8+this.holdjudge[1]*1+this.holdjudge[2]*4+this.holdjudge[3]*6)
 
         if(this.bonusflag==1){
             this.score+=this.bonus;
@@ -419,7 +420,7 @@ var HOLD = function(lanenum,startt,endt,speed){//holdnotesは123レーンのみ�
                     this.hitflag=2;
                     this.judge2=1;return 7;
                 }
-                else if(lag2>=180){
+                else if(lag2>=180&&(lag2<=-180&&keystate==0)){
                     this.hitflag=2;
                     this.judge2=0;return 8;
                 }
@@ -625,7 +626,11 @@ var GAME_NOTES=cc.Layer.extend({
                     //    sef++;
                     //}
 
-                    if(note_data[e].hitflag<2){
+                    if(note_data[e].hitflag==0){
+                        this.note_graph[e].attr({
+                            x: note_data[e].x,
+                            y: note_data[e].y
+                        });
                         flag3=note_data[e].deal(INPUT(note_data[e].lane,0),gametime*1000.0000);
                         switch(flag3){
                             case 1:
@@ -644,15 +649,9 @@ var GAME_NOTES=cc.Layer.extend({
                         }
 
                         note_data[e].calu(gametime*1000.0000);
-    
-                        
-                        this.note_graph[e].attr({
-                                x: note_data[e].x,
-                                y: note_data[e].y
-                        });
-    
-                        
+
                         if(note_data[e].y<550){
+                           
                             switch(note_data[e].lane){
                                 case 1:
                                 case 2:
@@ -678,15 +677,15 @@ var GAME_NOTES=cc.Layer.extend({
                 else if(note_sort[e]==2){
                     note_data[e].calu(gametime*1000.0000);
                  
+                  
                     this.note_graph[e].attr({
-                            x: note_data[e].x,
-                            y: note_data[e].y1
-                    });
-                    this.holdgraph_end[e].attr({
                         x: note_data[e].x,
-                        y: note_data[e].y2
-                    });
-
+                        y: note_data[e].y1
+                });
+                this.holdgraph_end[e].attr({
+                    x: note_data[e].x,
+                    y: note_data[e].y2
+                });
 
                     if(note_data[e].hitflag==0){
 
