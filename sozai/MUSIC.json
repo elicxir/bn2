@@ -8,7 +8,7 @@
 { "title" :"Daydream Cafe" ,"title2" :"ごちうさ一期op" ,"music" :"sozai/Daydream cafe.mp3" ,"graph" :"sozai/ごちうさ2.png" ,"chart1" :0 ,"chart2" :"sozai/DC_N.json","chart3" :"sozai/DC_H.json" ,"dif1" :0 ,"dif2" :11 ,"dif3" :19 },
 { "title" :"冥" ,"title2" :"冥" ,"music" :"sozai/冥.mp3" ,"graph" :"sozai/冥.png" ,"chart1" :0 ,"chart2" :"sozai/MEI_N.json","chart3" :"sozai/MEI_H.json" ,"dif1" :0 ,"dif2" :21 ,"dif3" :30 },
 { "title" :"卑弥呼" ,"title2" :"卑弥呼" ,"music" :"sozai/卑弥呼.mp3" ,"graph" :"sozai/卑弥呼.png" ,"chart1" :0 ,"chart2" :"sozai/GDP_N.json","chart3" :"sozai/HIMIKO_H.json" ,"dif1" :0 ,"dif2" :0 ,"dif3" :29 },
-{ "title" :"六兆年と一夜物語" ,"title2" :"六兆年と一夜物語" ,"music" :"sozai/vocaloid/六兆年と一夜物語.mp3." ,"graph" :"sozai/vocaloid/六兆年.png" ,"chart1" :0 ,"chart2" :"sozai/GDP_N.json","chart3" :"sozai/vocaloid/6S_H.json" ,"dif1" :0 ,"dif2" :0 ,"dif3" :25 }
+{ "title" :"六兆年と一夜物語" ,"title2" :"六兆年と一夜物語" ,"music" :"sozai/vocaloid/六兆年と一夜物語.mp3" ,"graph" :"sozai/vocaloid/六兆年.png" ,"chart1" :0 ,"chart2" :"sozai/GDP_N.json","chart3" :"sozai/vocaloid/6S_H.json" ,"dif1" :0 ,"dif2" :0 ,"dif3" :25 }
 
 
 ]
