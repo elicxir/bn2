@@ -6,6 +6,7 @@ var ctr_down;
 var ctr_left;
 var ctr_right;
 var ctr_enter;
+var ctr_esc;
 
 var now_1;
 var now_2;
@@ -15,6 +16,7 @@ var now_down;
 var now_left;
 var now_right;
 var now_enter;
+var now_esc;
 
 function INPUT(num,mode) {
     if(mode==0){
@@ -42,6 +44,9 @@ function INPUT(num,mode) {
             break;
     
             case 7: return ctr_right;
+            break;
+
+            case 8: return ctr_esc;
             break;
         }
 
@@ -71,6 +76,9 @@ function INPUT(num,mode) {
             break;
     
             case 7:  ctr_right++;
+            break;
+
+            case 8:  ctr_esc++;
             break;
         }
 
@@ -135,15 +143,26 @@ function INPUT_UPDATE(){
     else if(now_enter==0){
         ctr_enter=0;
     }
+
+    if(now_esc==1){
+        ctr_esc++;
+    }
+    else if(now_esc==0){
+        ctr_esc=0;
+    }
 }
 
-var DIF_PAD=cc.Layer.extend({});
 
 var D_PAD = cc.Layer.extend({
     sprite:null,
     init:function (mode) {
         this._super();
         var size = cc.winSize;
+
+        this.side3=side;
+        if(mode!=0){
+            this.side3=0;
+        }
 
         ctr_1=0;
         ctr_2=0;
@@ -153,6 +172,7 @@ var D_PAD = cc.Layer.extend({
         ctr_left=0;
         ctr_right=0;
         ctr_up=0;
+        ctr_esc=0;
 
         now_1=0;
         now_2=0;
@@ -162,7 +182,7 @@ var D_PAD = cc.Layer.extend({
         now_left=0;
         now_right=0;
         now_up=0;
-
+        now_esc=0;
         cc.eventManager.addListener({
             event: cc.EventListener.KEYBOARD,
 
@@ -348,18 +368,59 @@ var D_PAD = cc.Layer.extend({
         }, this);
 
         if(mode==0){
-            this.b1 = new cc.Sprite(res.b_png);
+            this.ge = new cc.Sprite();
 
         }
         else {
-            this.b1 = new cc.Sprite(res.easy);
+            this.ge = new cc.Sprite(res2.gear);
 
         }
-        this.b1.attr({
-            x: Calu_X(1,side%2+2),
-            y: 110,
-            scale:1.15,
+        this.ge.attr({
+            x: 540,
+            y: 55,
+            scale:0.6
         });
+
+        cc.eventManager.addListener({
+            event: cc.EventListener.TOUCH_ONE_BY_ONE,
+            onTouchBegan: function(touch, event){
+                var target=event.getCurrentTarget();
+                var location=target.convertToNodeSpace(touch.getLocation());
+                var spriteSize =target.getContentSize();
+                var spriteRect =cc.rect(0,0,spriteSize.width,spriteSize.height);
+                if(cc.rectContainsPoint(spriteRect,location)){
+                    now_esc=1;
+                    return true;
+
+                }
+                return false;
+            },
+            onTouchEnded:function(touch, event){
+                now_esc=0;
+                return true;
+            }
+        }, this.ge);
+
+        this.addChild(this.ge, 7);
+        
+
+        if(mode==0){
+            this.b1 = new cc.Sprite(res.b_png);
+            this.b1.attr({
+                x: Calu_X(1,side),
+                y: 110,
+                scale:1.15,
+            });
+        }
+        else {
+            this.b1 = new cc.Sprite(res.easy);
+            this.b1.attr({
+                x: Calu_X(1,0),
+                y: 110,
+                scale:1.15,
+            });
+        }
+       
 
         cc.eventManager.addListener({
             event: cc.EventListener.TOUCH_ONE_BY_ONE,
@@ -385,19 +446,20 @@ var D_PAD = cc.Layer.extend({
 
         if(mode==0){
             this.b2 = new cc.Sprite(res.b_png);
-
+            this.b2.attr({
+                x: Calu_X(2,side),
+                y: 110,scale:1.15,
+                
+            });
         }
         else {
             this.b2 = new cc.Sprite(res.basic);
-
+            this.b2.attr({
+                x: Calu_X(2,0),
+                y: 110,scale:1.15,
+                
+            });
         }
-
-        this.b2.attr({
-            x: Calu_X(2,side%2+2),
-            y: 110,scale:1.15,
-            
-        });
-        
         cc.eventManager.addListener({
             event: cc.EventListener.TOUCH_ONE_BY_ONE,
             onTouchBegan: function(touch, event){
@@ -420,18 +482,20 @@ var D_PAD = cc.Layer.extend({
         this.addChild(this.b2, 7);
         if(mode==0){
             this.b3 = new cc.Sprite(res.b_png);
-
+            this.b3.attr({
+                x: Calu_X(3,side),
+                y: 110,
+                scale:1.15,
+            });
         }
         else {
             this.b3 = new cc.Sprite(res.hard);
-
+            this.b3.attr({
+                x: Calu_X(3,0),
+                y: 110,
+                scale:1.15,
+            });
         }
-        
-        this.b3.attr({
-            x: Calu_X(3,side%2+2),
-            y: 110,
-            scale:1.15,
-        });
         cc.eventManager.addListener({
             event: cc.EventListener.TOUCH_ONE_BY_ONE,
             onTouchBegan: function(touch, event){
@@ -455,7 +519,7 @@ var D_PAD = cc.Layer.extend({
 
         this.enter = new cc.Sprite(res.dpad2_png);
         this.enter.attr({
-            x: Calu_X(10,side%2),
+            x: Calu_X(10,this.side3),
             y: 170,
             scale:1.6
 
@@ -466,7 +530,7 @@ var D_PAD = cc.Layer.extend({
 
         this.left = new cc.Sprite(res.dpad1_png);
         this.left.attr({
-            x: Calu_X(10,side%2)-92,
+            x: Calu_X(10,this.side3)-92,
             y: 170,
             scale:1.8,
         });
@@ -494,7 +558,7 @@ var D_PAD = cc.Layer.extend({
 
         this.right = new cc.Sprite(res.dpad1_png);
         this.right.attr({
-            x: Calu_X(10,side%2)+92,
+            x: Calu_X(10,this.side3)+92,
             y: 170,
             scale:1.8,
             rotation: 180
@@ -522,7 +586,7 @@ var D_PAD = cc.Layer.extend({
 
         this.up = new cc.Sprite(res.dpad1_png);
         this.up.attr({
-            x: Calu_X(10,side%2),
+            x: Calu_X(10,this.side3),
             y: 262,
             scale:1.8,
             rotation: 90
@@ -552,7 +616,7 @@ var D_PAD = cc.Layer.extend({
 
         this.down = new cc.Sprite(res.dpad1_png);
         this.down.attr({
-            x: Calu_X(10,side%2),
+            x: Calu_X(10,this.side3),
             y: 78,
             scale:1.8,
             rotation: 270
@@ -591,7 +655,9 @@ var D_PAD = cc.Layer.extend({
                 if (keyCode == cc.KEY.enter) {
                     now_enter=1;
                 }
-                
+                if (keyCode == cc.KEY.escape) {
+                    now_esc=1;
+                }
                 if (keyCode == cc.KEY.n) {
                     now_1=1;
                 }
@@ -623,7 +689,9 @@ var D_PAD = cc.Layer.extend({
             },
 
             onKeyReleased: function(keyCode,event){ 
-                
+                if (keyCode == cc.KEY.escape) {
+                    now_esc=0;
+                }
                 if (keyCode == cc.KEY.enter) {
                     now_enter=0;
                 }

@@ -30,7 +30,10 @@ var res2 = {
     data : "sozai/MUSIC.json",
     c : "res/1.png",
     se1:"res/hit.wav",
-    waku2:"res/waku2.png"
+    waku2:"res/waku2.png",
+    gear:"res/op.png",
+    gear2:"res/gear2.png"
+
 };
 
 var res = {

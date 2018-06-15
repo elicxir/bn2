@@ -1,4 +1,4 @@
-﻿function GO_NEXT(name){
+function GO_NEXT(name){
     //var s = cc.TransitionFade.create(2, new name());
     
     //cc.director.runScene(s);
@@ -16,7 +16,7 @@ var TITLE_L = cc.Layer.extend({
         this._super();
         var size = cc.winSize;
     
-        var Label = new cc.LabelTTF("ver 0.70", "Arial", 42);       
+        var Label = new cc.LabelTTF("ver0.80", "Arial", 42);       
         Label.x = size.width / 2+190;
         Label.y = 70;
         Label.setColor( cc.color(0, 0, 0, 20))
@@ -102,7 +102,6 @@ var RESULT_L = cc.Layer.extend({
             onKeyPressed: function(keyCode, event) {
                  
                 if (keyCode == cc.KEY.enter) {
-                    
                     cc.director.runScene(new MENU_S());
                    
                 }
